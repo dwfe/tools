@@ -3,9 +3,9 @@ import {AngleType, IPoint, rad} from '../geometry';
 /*
  * Homogeneous coordinates on RP**2
  * https://developer.mozilla.org/en-US/docs/Web/CSS/transform-function/matrix
- *                     a c e
- * [a,b,c,d,e,f]  <=>  b d f , here (a b c d) - linear part
- *                     0 0 1            (e f) - translation part
+ *                    a c e
+ * [a,b,c,d,e,f]  =>  b d f , here: linear part - a b c d
+ *                    0 0 1    translation part - e f
  */
 type IMatrix = [number, number, number, number, number, number];
 
@@ -48,7 +48,6 @@ class M { // exported as WebMatrix
 //region Data transformations
 
   apply = (point: IPoint): IPoint => M.apply(this.m, point);
-  convert = (value: number): number => M.convert(this.m, value);
 
 //endregion
 
@@ -132,12 +131,6 @@ class M { // exported as WebMatrix
     x: m[0] * p.x + m[2] * p.y + m[4],
     y: m[1] * p.x + m[3] * p.y + m[5]
   });
-
-  /*
-   * Apply the matrix to the value.
-   * For example, you only need to apply the matrix to one coordinate.
-   */
-  static convert = (m: IMatrix, x: number): number => M.apply(m, {x, y: 0}).x;
 
   /*
    * Translate is:
