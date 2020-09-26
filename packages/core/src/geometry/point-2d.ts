@@ -1,13 +1,13 @@
 import {IPoint} from './contracts';
 
-export class Point {
+export class P {
 
-  static of = (p?: IPoint): Point => new Point(p)
+  static of = (p?: IPoint): P => new P(p)
 
   constructor(public readonly p: IPoint = {x: 0, y: 0}) {
   }
 
-  equal = ({p}: Point): boolean => Point.equal(this.p, p)
+  equal = ({p}: P): boolean => P.equal(this.p, p)
 
 
   static subtract = (p1: IPoint, p2: IPoint): IPoint => ({
@@ -23,3 +23,7 @@ export class Point {
 
 const ACCURACY = 0.0001;
 
+
+export {
+  P as Point
+}
