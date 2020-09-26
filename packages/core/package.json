@@ -6,11 +6,18 @@
   "typings": "./dist/types",
   "scripts": {
     "build": "tsc -b",
-    "build watch": "tsc -b -w"
+    "build watch": "tsc -b -w",
+    "test": "jest"
   },
   "devDependencies": {
+    "@babel/core": "^7",
+    "@babel/preset-env": "^7",
+    "@babel/preset-typescript": "^7",
     "@types/node": "^12",
-    "typescript": "^3.7"
+    "@types/jest": "^26",
+    "babel-jest": "^26",
+    "typescript": "^3.7",
+    "jest": "^26"
   },
   "dependencies": {}
 }
