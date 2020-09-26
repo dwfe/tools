@@ -15,8 +15,10 @@ describe(`matrix-2d`, () => {
   test(`inversion`, () => {
     const m = WebMatrix.of([-1.04368, -0.200666, -0.180935, 1.6125, -9, 5]);
     const invM = m.invert();
-    expect(invM?.multiply(m).equal(m.multiply(invM as WebMatrix))).toBeTruthy();
-    expect(invM?.multiply(m).equal(m.multiply(WebMatrix.of()))).toBeFalsy();
+    const multiply1 = invM?.multiply(m) as WebMatrix
+    const multiply2 = m.multiply(invM as WebMatrix)
+    expect(multiply1.equal(multiply2)).toBeTruthy();
+    expect(multiply1.equal(m.multiply(WebMatrix.of()))).toBeFalsy();
   })
 
   test(`translate`, () => {
