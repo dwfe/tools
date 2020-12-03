@@ -1,6 +1,6 @@
 {
   "name": "dwfe-web-interactive",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "license": "MIT",
   "scripts": {
     "bootstrap": "lerna bootstrap --hoist"
