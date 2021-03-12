@@ -1,0 +1,19 @@
+{
+  "extends": "./config/tsconfig",
+  "compilerOptions": {
+    "composite": true,
+    "outDir": "dist/js",
+    "baseUrl": ".",
+    "skipLibCheck": true
+  },
+  "references": [
+    { "path": "./packages/math" }
+  ],
+  "exclude": [
+    "**/tests*",
+    "**/*.test.ts",
+    "**/node_modules",
+    "**/dist",
+    "**/*.d.ts"
+  ]
+}
