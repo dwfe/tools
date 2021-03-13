@@ -1,0 +1,48 @@
+{
+  "name": "@do-while-for-each/react",
+  "description": "Tools for React.js app",
+  "version": "1.0.0",
+  "homepage": "https://github.com/dwfe/tools/tree/master/packages/react",
+  "bugs": "https://github.com/dwfe/tools/issues",
+  "keywords": [
+    "react"
+  ],
+  "license": "MIT",
+  "author": "Do-While-For-Each",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:dwfe/tools.git"
+  },
+  "main": "./dist/js",
+  "typings": "./dist/types",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist/",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "clean": "rimraf ./dist && rimraf package-lock.json",
+    "build": "npm run clean && tsc -b",
+    "prod": "npm run build && webpack"
+  },
+  "peerDependencies": {
+    "react": "17.0.1",
+    "@do-while-for-each/rxjs": "^1.0.2"
+  },
+  "devDependencies": {
+    "@do-while-for-each/webpack": "1",
+    "@types/node": "12",
+    "file-loader": "6",
+    "rimraf": "3",
+    "ts-loader": "8",
+    "typescript": "4",
+    "webpack": "4.44.2",
+    "webpack-cli": "3",
+    "react": "17.0.1",
+    "@do-while-for-each/rxjs": "^1.0.2"
+  },
+  "dependencies": {}
+}
