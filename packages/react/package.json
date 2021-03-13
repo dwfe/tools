@@ -1,7 +1,7 @@
 {
   "name": "@do-while-for-each/react",
   "description": "Tools for React.js app",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "homepage": "https://github.com/dwfe/tools/tree/master/packages/react",
   "bugs": "https://github.com/dwfe/tools/issues",
   "keywords": [
@@ -33,7 +33,7 @@
     "react": "^17.0.1"
   },
   "devDependencies": {
-    "@do-while-for-each/rxjs": "^1.0.5",
+    "@do-while-for-each/rxjs": "^1.0.6",
     "@do-while-for-each/webpack": "^1.0.1",
     "@types/node": "12",
     "file-loader": "6",

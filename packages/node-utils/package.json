@@ -1,7 +1,7 @@
 {
   "name": "@do-while-for-each/node-utils",
   "description": "Node.js utils",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "homepage": "https://github.com/dwfe/tools/tree/master/packages/node-utils",
   "bugs": "https://github.com/dwfe/tools/issues",
   "keywords": [
@@ -44,7 +44,7 @@
   },
   "dependencies": {
     "@do-while-for-each/math": "^1.0.2",
-    "@do-while-for-each/rxjs": "^1.0.5",
+    "@do-while-for-each/rxjs": "^1.0.6",
     "dotenv": "8.2.0",
     "jpeg-js": "0.4.3",
     "node-fetch": "2.6.1",
