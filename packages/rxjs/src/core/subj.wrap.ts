@@ -18,7 +18,7 @@ export class SubjectWrap<TData = any> {
     this.subj.next(value)
   }
 
-  getValue(): Promise<TData> {
+  value(): Promise<TData> {
     return this.subj.asObservable().pipe(first()).toPromise();
   }
 
