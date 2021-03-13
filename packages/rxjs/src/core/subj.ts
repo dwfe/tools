@@ -1,10 +1,10 @@
 import {first, Observable, shareReplay, Subject, takeUntil} from '../re-export'
 
-export class SubjectWrap<TData = any> {
+export class Subj<TData = any> {
 
-  subj: Subject<TData>
-  value$: Observable<TData>
-  stopper$: Observable<any>
+  public subj: Subject<TData>
+  public value$: Observable<TData>
+  public stopper$: Observable<any>
   private stopper = new Subject<any>()
 
   constructor() {
@@ -21,11 +21,11 @@ export class SubjectWrap<TData = any> {
     return this.subj.asObservable().pipe(first()).toPromise();
   }
 
-  setValue = (value: TData) => {
+  setValue(value: TData): void {
     this.subj.next(value)
   }
 
-  stop() {
+  stop(): void {
     this.stopper.next(true)
     this.stopper.complete()
   }

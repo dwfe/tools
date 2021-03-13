@@ -1,2 +1,2 @@
-export * from './behaviour-subj.wrap'
-export * from './subject.wrap'
+export * from './behaviour.subj'
+export * from './subj'
