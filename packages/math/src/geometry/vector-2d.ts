@@ -3,7 +3,7 @@ import {Point} from './point-2d';
 
 export class Vector {
 
-  static len = (v: IVector): number => {
+  static len(v: IVector): number {
     const {x, y} = Point.subtract(v[0], v[1])
     return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2))
   }

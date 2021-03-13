@@ -1,6 +1,6 @@
 import {IPoint} from './contracts';
 
-export class P {
+class P {
 
   static of = (p?: IPoint): P => new P(p)
 
