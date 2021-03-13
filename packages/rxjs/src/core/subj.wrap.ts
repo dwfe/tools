@@ -14,12 +14,12 @@ export class SubjectWrap<TData = any> {
     );
   }
 
-  setValue = (value: TData) => {
-    this.subj.next(value)
-  }
-
   value(): Promise<TData> {
     return this.subj.asObservable().pipe(first()).toPromise();
+  }
+
+  setValue = (value: TData) => {
+    this.subj.next(value)
   }
 
   stop() {
