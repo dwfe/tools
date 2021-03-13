@@ -44,11 +44,11 @@
   },
   "dependencies": {
     "@do-while-for-each/math": "^1.0.1",
+    "@do-while-for-each/rxjs": "1",
     "dotenv": "8.2.0",
     "jpeg-js": "0.4.3",
     "node-fetch": "2.6.1",
     "pixelmatch": "5.2.1",
-    "playwright": "1.9.1",
-    "rxjs": "6"
+    "playwright": "1.9.1"
   }
 }

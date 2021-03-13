@@ -1,13 +1,12 @@
-import {BehaviorSubject} from 'rxjs';
-import {filter, first} from 'rxjs/operators';
+import {BehaviourSubjWrap, filter, first} from '@do-while-for-each/rxjs';
 import {Page} from 'playwright';
 import {IImgCompareResult, ITask, TCommand} from './contract';
 
 export abstract class AbstractTask implements ITask {
 
-  private allDataReceivedSubj = new BehaviorSubject<any>(null);
-  private screenshotSubj = new BehaviorSubject<Buffer>(null);
-  private compareScreenshotSubj = new BehaviorSubject<IImgCompareResult>(null);
+  private allDataReceivedWrap = new BehaviourSubjWrap<any>(null);
+  private screenshotWrap = new BehaviourSubjWrap<Buffer>(null);
+  private compareScreenshotWrap = new BehaviourSubjWrap<IImgCompareResult>(null);
 
   constructor(public readonly id: string) {
   }
@@ -17,34 +16,34 @@ export abstract class AbstractTask implements ITask {
   page?: Page;
 
   setAllDataReceived() {
-    this.allDataReceivedSubj.next(true);
+    this.allDataReceivedWrap.setValue(true);
   }
 
   async allDataReceived(): Promise<any> {
-    return result(this.allDataReceivedSubj);
+    return result(this.allDataReceivedWrap);
   }
 
   setScreenshot(buf: Buffer) {
-    this.screenshotSubj.next(buf);
+    this.screenshotWrap.setValue(buf);
   }
 
   async screenshot(): Promise<Buffer> {
-    return result(this.screenshotSubj);
+    return result(this.screenshotWrap);
   }
 
   setCompareScreenshotResult(result: IImgCompareResult) {
-    this.compareScreenshotSubj.next(result);
+    this.compareScreenshotWrap.setValue(result);
   }
 
   async compareScreenshotResult(): Promise<IImgCompareResult> {
-    return result(this.compareScreenshotSubj);
+    return result(this.compareScreenshotWrap);
   }
 
 }
 
-const result = async <T>(subj: BehaviorSubject<T>): Promise<T> =>
-  subj.getValue()
-  || subj.asObservable().pipe(
+const result = async <T>(wrap: BehaviourSubjWrap<T>): Promise<T> =>
+  wrap.value
+  || wrap.value$.pipe(
   filter(data => !!data),
   first()
   ).toPromise()
