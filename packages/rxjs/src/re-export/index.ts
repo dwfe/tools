@@ -1,4 +1,4 @@
-import {BehaviorSubject, combineLatest, Observable, Subject, Subscription} from 'rxjs'
+import {BehaviorSubject, combineLatest, fromEvent, Observable, Subject, Subscription} from 'rxjs'
 import {debounceTime, distinctUntilChanged, filter, first, map, mapTo, merge, mergeMap, shareReplay, skip, switchMap, takeUntil, tap, throttleTime} from 'rxjs/operators'
 
 export {
@@ -6,6 +6,8 @@ export {
   Subscription,
   Subject,
   BehaviorSubject,
+  fromEvent,
+  combineLatest,
 
   tap,
   map,
@@ -17,7 +19,6 @@ export {
   switchMap,
   merge,
   mergeMap,
-  combineLatest,
   debounceTime,
   throttleTime,
   shareReplay,
