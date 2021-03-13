@@ -1,13 +1,34 @@
 {
   "name": "@do-while-for-each/node-utils",
+  "description": "Node.js utils",
   "version": "1.0.0",
-  "private": true,
-  "license": "UNLICENSED",
+  "homepage": "https://github.com/dwfe/tools/tree/master/packages/node-utils",
+  "bugs": "https://github.com/dwfe/tools/issues",
+  "keywords": [
+    "node",
+    "automation-environment",
+    "fs"
+  ],
+  "license": "MIT",
+  "author": "Do|While|For|Each",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:dwfe/tools.git"
+  },
   "main": "./dist/js",
   "typings": "./dist/types",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist/",
+    "LICENSE",
+    "README.md"
+  ],
   "scripts": {
     "clean": "rimraf ./dist",
-    "build": "npm run clean && tsc -b"
+    "build": "npm run clean && tsc -b",
+    "prod": "npm run build && node ./dist/js/prod.js"
   },
   "devDependencies": {
     "@types/jpeg-js": "0.3.7",
@@ -16,7 +37,10 @@
     "@types/pixelmatch": "^5.2.1",
     "@types/pngjs": "3.4.2",
     "rimraf": "3",
-    "typescript": "4"
+    "typescript": "4",
+    "webpack": "4.44.2",
+    "webpack-cli": "3",
+    "@do-while-for-each/webpack": "1"
   },
   "dependencies": {
     "dotenv": "8.2.0",

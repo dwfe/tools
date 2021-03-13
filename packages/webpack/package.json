@@ -2,9 +2,11 @@
   "name": "@do-while-for-each/webpack",
   "description": "Webpack tools",
   "version": "1.0.0",
-  "homepage": "",
+  "homepage": "https://github.com/dwfe/tools/tree/master/packages/webpack",
   "bugs": "https://github.com/dwfe/tools/issues",
-  "keywords": [],
+  "keywords": [
+    "webpack"
+  ],
   "license": "MIT",
   "author": "Do|While|For|Each",
   "repository": {
@@ -16,6 +18,11 @@
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "dist/",
+    "LICENSE",
+    "README.md"
+  ],
   "scripts": {
     "clean": "rimraf ./dist && rimraf package-lock.json",
     "build": "npm run clean && tsc -b",
@@ -28,10 +35,5 @@
     "webpack": "4.44.2",
     "webpack-cli": "3"
   },
-  "dependencies": {},
-  "files": [
-    "dist/",
-    "LICENSE",
-    "README.md"
-  ]
+  "dependencies": {}
 }

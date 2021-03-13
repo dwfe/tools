@@ -1,1 +1,1 @@
-Some Node.js utils
+Node.js utils

@@ -52,10 +52,14 @@ export class FileProcess {
   }
 
   static deletePath(path: PathLike, options?: RmDirOptions): void {
-    if (lstatSync(path).isDirectory())
-      rmdirSync(path, options)
-    else
-      unlinkSync(path)
+    try {
+      if (lstatSync(path).isDirectory())
+        rmdirSync(path, options)
+      else
+        unlinkSync(path)
+    } catch (e) {
+      console.warn(`can't delete '${path}':`, e.message)
+    }
   }
 
 }

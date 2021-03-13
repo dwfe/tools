@@ -19,7 +19,9 @@ export class StandardProdConf {
       plugins: [
         new WebpackCompilerFileAction('done', [
           ['clean-dir', [join(this.distDir, 'js')]],
-          ['move-file', [join(this.distDir, 'index.js'), join(this.distDir, 'js/index.js')]]
+          ['move-file', [join(this.distDir, 'index.js'), join(this.distDir, 'js/index.js')]],
+          ['delete-path', [join(this.distDir, 'types/webpack-prod.conf.d.ts')]],
+          ['delete-path', [join(this.distDir, 'types/webpack-prod.conf.d.ts.map')]],
         ])
       ]
     }

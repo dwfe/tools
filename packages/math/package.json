@@ -1,13 +1,33 @@
 {
   "name": "@do-while-for-each/math",
+  "description": "Everything related to mathematics",
   "version": "1.0.0",
+  "homepage": "https://github.com/dwfe/tools/tree/master/packages/math",
+  "bugs": "https://github.com/dwfe/tools/issues",
+  "keywords": [
+    "math"
+  ],
   "license": "MIT",
+  "author": "Do|While|For|Each",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:dwfe/tools.git"
+  },
   "main": "./dist/js",
   "typings": "./dist/types",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist/",
+    "LICENSE",
+    "README.md"
+  ],
   "scripts": {
     "clean": "rimraf ./dist && rimraf package-lock.json",
     "build": "npm run clean && tsc -b",
-    "test": "jest"
+    "test": "jest",
+    "prod": "npm run build && webpack --config ./dist/js/webpack-prod.conf.js"
   },
   "devDependencies": {
     "@types/jest": "26",
@@ -15,7 +35,10 @@
     "jest": "26.6.0",
     "rimraf": "3",
     "ts-jest": "26",
-    "typescript": "4"
+    "typescript": "4",
+    "webpack": "4.44.2",
+    "webpack-cli": "3",
+    "@do-while-for-each/webpack": "1"
   },
   "dependencies": {}
 }
