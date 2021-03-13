@@ -1,4 +1,4 @@
-import {distinctUntilChanged, Observable, shareReplay, Subject, takeUntil} from '../re-export'
+import {first, Observable, Subject, takeUntil} from '../re-export'
 
 export class SubjectWrap<TData = any> {
 
@@ -11,13 +11,15 @@ export class SubjectWrap<TData = any> {
     this.subj = new Subject();
     this.value$ = this.subj.asObservable().pipe(
       takeUntil(this.stopper),
-      distinctUntilChanged(),
-      shareReplay(1)
     );
   }
 
   setValue = (value: TData) => {
     this.subj.next(value)
+  }
+
+  getValue(): Promise<TData> {
+    return this.subj.asObservable().pipe(first()).toPromise();
   }
 
   stop() {
