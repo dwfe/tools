@@ -1,7 +1,7 @@
 {
   "name": "@do-while-for-each/math",
   "description": "Everything related to mathematics",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "homepage": "https://github.com/dwfe/tools/tree/master/packages/math",
   "bugs": "https://github.com/dwfe/tools/issues",
   "keywords": [
@@ -30,6 +30,7 @@
     "prod": "npm run build && webpack --config ./dist/js/webpack-prod.conf.js"
   },
   "devDependencies": {
+    "@do-while-for-each/webpack": "^1.0.1",
     "@types/jest": "26",
     "@types/node": "12.20",
     "jest": "26.6.0",
@@ -37,8 +38,6 @@
     "ts-jest": "26",
     "typescript": "4",
     "webpack": "4.44.2",
-    "webpack-cli": "3",
-    "@do-while-for-each/webpack": "1"
-  },
-  "dependencies": {}
+    "webpack-cli": "3"
+  }
 }
