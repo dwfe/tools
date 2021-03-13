@@ -7,7 +7,7 @@ class P {
   constructor(public readonly p: IPoint = {x: 0, y: 0}) {
   }
 
-  equal = ({p}: P): boolean => P.equal(this.p, p)
+  isEquals = ({p}: P): boolean => P.isEquals(this.p, p);
 
 
   static subtract = (p1: IPoint, p2: IPoint): IPoint => ({
@@ -15,7 +15,7 @@ class P {
     y: p1.y - p2.y
   })
 
-  static equal = (p1: IPoint, p2: IPoint): boolean =>
+  static isEquals = (p1: IPoint, p2: IPoint): boolean =>
     Math.abs(p1.x - p2.x) < ACCURACY &&
     Math.abs(p1.y - p2.y) < ACCURACY
   ;

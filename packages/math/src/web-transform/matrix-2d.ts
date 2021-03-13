@@ -51,7 +51,7 @@ class M { // exported as WebMatrix
 
 //endregion
 
-  equal = ({m}: M): boolean => M.equal(this.m, m);
+  isEquals = ({m}: M): boolean => M.equal(this.m, m);
   toJSON = () => [...this.m];
   toString = () => this.m.join(', ');
   toStyleValue = () => `matrix(${this.toString()})`;

@@ -1,0 +1,14 @@
+{
+  "extends": "../../config/tsconfig",
+  "compilerOptions": {
+    "composite": true,
+    "baseUrl": ".",
+    "outDir": "./dist/js",
+    "declarationDir": "./dist/types",
+    "esModuleInterop": true
+  },
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}
