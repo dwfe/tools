@@ -1,7 +1,7 @@
 {
   "name": "@do-while-for-each/rxjs",
   "description": "RxJS re-export, and the functionality associated with RxJS",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "homepage": "https://github.com/dwfe/tools/tree/master/packages/rxjs",
   "bugs": "https://github.com/dwfe/tools/issues",
   "keywords": [
@@ -30,13 +30,12 @@
     "prod": "npm run build && webpack --config ./dist/js/webpack-prod.conf.js"
   },
   "devDependencies": {
+    "@do-while-for-each/webpack": "^1.0.1",
     "@types/node": "12",
     "rimraf": "3",
+    "rxjs": "6.6.6",
     "typescript": "4",
     "webpack": "4.44.2",
-    "webpack-cli": "3",
-    "@do-while-for-each/webpack": "^1.0.1",
-    "rxjs": "6.6.6"
-  },
-  "dependencies": {}
+    "webpack-cli": "3"
+  }
 }
