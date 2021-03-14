@@ -24,9 +24,8 @@ export {
   shareReplay,
   takeUntil,
 
-  // https://blog.strongbrew.io/what-are-schedulers-in-rxjs/
-  async,
-  asap,
-  queue,
-  animationFrame,
+  async,          // Schedules on the macro task queue
+  asap,           // Schedules on the micro task queue
+  queue,          // Executes task synchronously but waits for current task to be finished
+  animationFrame, // Relies on ‘requestAnimationFrame’
 }
