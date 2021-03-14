@@ -33,11 +33,9 @@
     "react": "^17.0.1"
   },
   "devDependencies": {
-    "@do-while-for-each/rxjs": "^1.0.6",
     "@do-while-for-each/webpack": "^1.0.1",
     "@types/node": "12",
     "file-loader": "6",
-    "react": "^17.0.1",
     "rimraf": "3",
     "ts-loader": "8",
     "typescript": "4",
