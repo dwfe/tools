@@ -1,23 +1,12 @@
-import webpack, {Configuration} from 'webpack'
+import {Configuration} from 'webpack'
 import {join} from 'path'
-import {WebpackCompilerFileAction} from './plugin/compiler.file-action'
+import {WebpackCompilerFileAction} from '../webpack/plugin/compiler.file-action'
+import {AbstractWebpackProd} from './abstract.webpack.prod'
 
-export class StandardProd {
-
-  DIST: string
-  JS: string
-  TYPES: string
-  INDEX = 'index.js'
+export class WebProd extends AbstractWebpackProd {
 
   constructor() {
-    this.DIST = join(process.cwd(), 'dist')
-    this.JS = join(this.DIST, 'js')
-    this.TYPES = join(this.DIST, 'types')
-    webpack(this.config(), (err, stats) => {
-      if (err || stats.hasErrors()) {
-        console.log(stats.toString());
-      }
-    })
+    super()
   }
 
   config(): Configuration {

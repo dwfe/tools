@@ -26,7 +26,7 @@
   "scripts": {
     "clean": "rimraf ./dist && rimraf package-lock.json",
     "build": "npm run clean && tsc -b",
-    "prod": "npm run build && webpack"
+    "prod": "npm run build && node ./dist/js/prod.js"
   },
   "peerDependencies": {
     "react": "^17.0.1"
