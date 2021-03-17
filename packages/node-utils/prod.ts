@@ -1,5 +1,5 @@
+import {FileProcess} from '@do-while-for-each/develop'
 import {join, resolve} from 'path'
-import {FileProcess} from '@do-while-for-each/webpack'
 
 const DIST = resolve(__dirname, '../')
 

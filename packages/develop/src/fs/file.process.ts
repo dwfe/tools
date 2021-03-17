@@ -1,4 +1,4 @@
-import {closeSync, copyFileSync, lstatSync, openSync, PathLike, readdirSync, RmDirOptions, rmdirSync, unlinkSync} from 'fs'
+import {closeSync, copyFileSync, existsSync, lstatSync, openSync, PathLike, readdirSync, RmDirOptions, rmdirSync, unlinkSync} from 'fs'
 import {join} from 'path'
 import {TCmd} from './contract'
 
@@ -20,8 +20,8 @@ export class FileProcess {
           console.log(`> copy file '${src}' -> '${dest}' \r\n`)
           return;
         case 'delete-path':
-          FileProcess.deletePath(src, {recursive: true})
           console.log(`> delete path '${src}' \r\n`)
+          FileProcess.deletePath(src, {recursive: true})
           return;
         default:
           throw new Error(`unknown command type '${cmd}'`)
@@ -53,12 +53,17 @@ export class FileProcess {
 
   static deletePath(path: PathLike, options?: RmDirOptions): void {
     try {
+      if (!existsSync(path)) {
+        console.log(`> path not exists \r\n`)
+        return
+      }
+
       if (lstatSync(path).isDirectory())
         rmdirSync(path, options)
       else
         unlinkSync(path)
     } catch (e) {
-      console.warn(`can't delete '${path}':`, e.message)
+      console.warn(`> can't delete:`, e.message)
     }
   }
 

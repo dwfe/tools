@@ -31,16 +31,11 @@
     "prod": "npm run build && node ./dist/js/prod.js"
   },
   "devDependencies": {
-    "@do-while-for-each/webpack": "^1.0.1",
+    "@do-while-for-each/develop": "^1.0.0",
     "@types/jpeg-js": "0.3.7",
-    "@types/node": "12",
     "@types/node-fetch": "2.5.7",
     "@types/pixelmatch": "^5.2.1",
-    "@types/pngjs": "3.4.2",
-    "rimraf": "3",
-    "typescript": "4",
-    "webpack": "4.44.2",
-    "webpack-cli": "3"
+    "@types/pngjs": "3.4.2"
   },
   "dependencies": {
     "@do-while-for-each/math": "^1.0.2",
