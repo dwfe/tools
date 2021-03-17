@@ -1,7 +1,7 @@
 {
   "name": "@do-while-for-each/develop",
   "description": "Tools for develop",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "homepage": "https://github.com/dwfe/tools/tree/master/packages/develop",
   "bugs": "https://github.com/dwfe/tools/issues",
   "keywords": [],
@@ -26,17 +26,15 @@
     "build": "npm run clean && tsc -b",
     "prod": "npm run build && node ./dist/js/prod.js"
   },
-  "devDependencies": {
-  },
   "dependencies": {
     "@types/jest": "26.0.20",
     "@types/node": "12.20.6",
-    "typescript": "4.2.3",
-    "webpack": "4.44.2",
-    "webpack-cli": "3.3.12",
+    "file-loader": "6.2.0",
     "jest": "26.6.0",
     "ts-jest": "26.5.3",
-    "file-loader": "6.2.0",
-    "ts-loader": "8.0.18"
+    "ts-loader": "8.0.18",
+    "typescript": "4.2.3",
+    "webpack": "4.44.2",
+    "webpack-cli": "3.3.12"
   }
 }
