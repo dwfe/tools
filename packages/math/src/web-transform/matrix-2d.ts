@@ -1,19 +1,11 @@
-import {AngleType, IPoint, rad} from '../geometry';
-
-/*
- * Homogeneous coordinates on RP**2
- * https://developer.mozilla.org/en-US/docs/Web/CSS/transform-function/matrix
- *                    a c e
- * [a,b,c,d,e,f]  =>  b d f , here: linear part - a b c d
- *                    0 0 1    translation part - e f
- */
-type IMatrix = [number, number, number, number, number, number];
+import {Angle, AngleType, IPoint} from '../geometry'
+import {TWebMatrix} from './contract'
 
 class M { // exported as WebMatrix
 
-  static of = (m?: IMatrix): M => new M(m);
+  static of = (m?: TWebMatrix): M => new M(m);
 
-  constructor(public readonly m: IMatrix = M.identity()) {
+  constructor(public readonly m: TWebMatrix = M.identity()) {
   }
 
   determinant = (): number => M.determinant(this.m);
@@ -64,7 +56,7 @@ class M { // exported as WebMatrix
    *                    0 0 1
    * https://en.wikipedia.org/wiki/Identity_matrix
    */
-  static identity = (): IMatrix => [1, 0, 0, 1, 0, 0];
+  static identity = (): TWebMatrix => [1, 0, 0, 1, 0, 0];
 
   /*
    * The Determinant of a matrix by the Laplace expansion:
@@ -73,7 +65,7 @@ class M { // exported as WebMatrix
    *       0 0 1
    * https://en.wikipedia.org/wiki/Laplace_expansion
    */
-  static determinant = (m: IMatrix): number => m[0] * m[3] - m[1] * m[2];
+  static determinant = (m: TWebMatrix): number => m[0] * m[3] - m[1] * m[2];
 
   /*
    * Inverse matrix: MT' * (1/det)
@@ -82,7 +74,7 @@ class M { // exported as WebMatrix
    *       g h 1 | h = 0      E F 1     (-1)*(b*h-g*d)  (-1)*(a*h-g*c)  1                  0   0   1
    * https://en.wikipedia.org/wiki/Invertible_matrix#Inversion_of_3_%C3%97_3_matrices
    */
-  static invert = (m: IMatrix): IMatrix | null => {
+  static invert = (m: TWebMatrix): TWebMatrix | null => {
     const det = M.determinant(m);
     return det === 0 ? null // matrix is not invertible
       : M.multiplyByScalar([
@@ -103,7 +95,7 @@ class M { // exported as WebMatrix
    * https://developer.mozilla.org/en-US/docs/Web/CSS/transform-function#Transformation_functions
    * https://en.wikipedia.org/wiki/Matrix_multiplication
    */
-  static multiply = (m1: IMatrix, m2: IMatrix): IMatrix => ([
+  static multiply = (m1: TWebMatrix, m2: TWebMatrix): TWebMatrix => ([
     m1[0] * m2[0] + m1[2] * m2[1],         // a
     m1[1] * m2[0] + m1[3] * m2[1],         // b
     m1[0] * m2[2] + m1[2] * m2[3],         // c
@@ -112,7 +104,7 @@ class M { // exported as WebMatrix
     m1[1] * m2[4] + m1[3] * m2[5] + m1[5]  // f
   ])
 
-  static multiplyByScalar = (m: IMatrix, scalar: number): IMatrix => ([
+  static multiplyByScalar = (m: TWebMatrix, scalar: number): TWebMatrix => ([
     m[0] * scalar,
     m[1] * scalar,
     m[2] * scalar,
@@ -127,7 +119,7 @@ class M { // exported as WebMatrix
    *   b d f  *  y  =  b*x+d*y+f
    *   0 0 1     1     1
    */
-  static apply = (m: IMatrix, p: IPoint): IPoint => ({
+  static apply = (m: TWebMatrix, p: IPoint): IPoint => ({
     x: m[0] * p.x + m[2] * p.y + m[4],
     y: m[1] * p.x + m[3] * p.y + m[5]
   });
@@ -141,9 +133,9 @@ class M { // exported as WebMatrix
    * https://developer.mozilla.org/en-US/docs/Web/CSS/transform-function/translateX
    * https://developer.mozilla.org/en-US/docs/Web/CSS/transform-function/translateY
    */
-  static translate = (m: IMatrix, tx: number, ty: number): IMatrix => M.multiply(m, [1, 0, 0, 1, tx, ty]);
-  static translateX = (m: IMatrix, t: number): IMatrix => M.translate(m, t, 0);
-  static translateY = (m: IMatrix, t: number): IMatrix => M.translate(m, 0, t);
+  static translate = (m: TWebMatrix, tx: number, ty: number): TWebMatrix => M.multiply(m, [1, 0, 0, 1, tx, ty]);
+  static translateX = (m: TWebMatrix, t: number): TWebMatrix => M.translate(m, t, 0);
+  static translateY = (m: TWebMatrix, t: number): TWebMatrix => M.translate(m, 0, t);
 
   /*
    * Scale is:
@@ -154,9 +146,9 @@ class M { // exported as WebMatrix
    * https://developer.mozilla.org/en-US/docs/Web/CSS/transform-function/scaleX
    * https://developer.mozilla.org/en-US/docs/Web/CSS/transform-function/scaleY
    */
-  static scale = (m: IMatrix, sx: number, sy: number): IMatrix => M.multiply(m, [sx, 0, 0, sy, 0, 0]);
-  static scaleX = (m: IMatrix, s: number): IMatrix => M.scale(m, s, 1);
-  static scaleY = (m: IMatrix, s: number): IMatrix => M.scale(m, 1, s);
+  static scale = (m: TWebMatrix, sx: number, sy: number): TWebMatrix => M.multiply(m, [sx, 0, 0, sy, 0, 0]);
+  static scaleX = (m: TWebMatrix, s: number): TWebMatrix => M.scale(m, s, 1);
+  static scaleY = (m: TWebMatrix, s: number): TWebMatrix => M.scale(m, 1, s);
 
   /*
    * Rotate is:
@@ -175,8 +167,8 @@ class M { // exported as WebMatrix
    * https://developer.mozilla.org/en-US/docs/Web/CSS/transform-function/rotateX
    * https://developer.mozilla.org/en-US/docs/Web/CSS/transform-function/rotateY
    */
-  static rotate = (m: IMatrix, angle: number, angleType?: AngleType): IMatrix => {
-    const radians = rad(angle, angleType)
+  static rotate = (m: TWebMatrix, angle: number, angleType?: AngleType): TWebMatrix => {
+    const radians = Angle.rad(angle, angleType)
     const cos = Math.cos(radians)
     const sin = Math.sin(radians)
     return M.multiply(m, [cos, sin, -sin, cos, 0, 0])
@@ -191,14 +183,14 @@ class M { // exported as WebMatrix
    * https://developer.mozilla.org/en-US/docs/Web/CSS/transform-function/skewX
    * https://developer.mozilla.org/en-US/docs/Web/CSS/transform-function/skewY
    */
-  static skew = (m: IMatrix, ax: number, ay: number, angleType?: AngleType): IMatrix =>
-    M.multiply(m, [1, Math.tan(rad(ay, angleType)), Math.tan(rad(ax, angleType)), 1, 0, 0])
+  static skew = (m: TWebMatrix, ax: number, ay: number, angleType?: AngleType): TWebMatrix =>
+    M.multiply(m, [1, Math.tan(Angle.rad(ay, angleType)), Math.tan(Angle.rad(ax, angleType)), 1, 0, 0])
   ;
-  static skewX = (m: IMatrix, angle: number, angleType?: AngleType): IMatrix => M.skew(m, angle, 0, angleType);
-  static skewY = (m: IMatrix, angle: number, angleType?: AngleType): IMatrix => M.skew(m, 0, angle, angleType);
+  static skewX = (m: TWebMatrix, angle: number, angleType?: AngleType): TWebMatrix => M.skew(m, angle, 0, angleType);
+  static skewY = (m: TWebMatrix, angle: number, angleType?: AngleType): TWebMatrix => M.skew(m, 0, angle, angleType);
 
 
-  static equal = (m1: IMatrix, m2: IMatrix): boolean =>
+  static equal = (m1: TWebMatrix, m2: TWebMatrix): boolean =>
     Math.abs(m1[0] - m2[0]) < ACCURACY &&
     Math.abs(m1[1] - m2[1]) < ACCURACY &&
     Math.abs(m1[2] - m2[2]) < ACCURACY &&
@@ -212,6 +204,5 @@ const ACCURACY = 0.0001;
 
 
 export {
-  M as WebMatrix,
-  IMatrix as WebMatrixDataType,
+  M as WebMatrix
 }

@@ -1,6 +1,6 @@
 import {describe, expect} from '@jest/globals'
-import {WebMatrix} from '../web-transform';
-import {Point} from '../geometry';
+import {WebMatrix} from '../web-transform'
+import {Point} from '../geometry'
 
 describe(`matrix-2d`, () => {
 
