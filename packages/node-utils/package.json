@@ -38,6 +38,7 @@
     "@types/pngjs": "3.4.2"
   },
   "dependencies": {
+    "@do-while-for-each/common": "1.0.0",
     "@do-while-for-each/math": "^1.0.4",
     "@do-while-for-each/rxjs": "^1.0.8",
     "dotenv": "8.2.0",

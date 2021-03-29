@@ -1,5 +1,6 @@
 import {BrowserContextOptions, LaunchOptions, Mouse, Page} from 'playwright'
 import {IPoint} from '@do-while-for-each/math'
+import {Type} from '@do-while-for-each/common'
 import {PixelmatchOptions} from 'pixelmatch'
 import {PNG} from 'pngjs'
 
@@ -292,8 +293,3 @@ export interface IStorageIndexValue {
 }
 
 //endregion
-
-
-export interface Type<T> extends Function { // тип описывает конструктор какого-то класса
-  new(...args: any[]): T;
-}
