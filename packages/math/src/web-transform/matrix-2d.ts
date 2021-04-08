@@ -16,7 +16,7 @@ class M { // exported as WebMatrix
     const invM = M.invert(this.m)
     return invM === null ? null : M.of(invM)
   }
-  multiply = ({m}: M): M => M.of(M.multiply(this.m, m));
+  multiply = (anotherM: M): M => M.of(M.multiply(this.m, anotherM.m));
   multiplyByScalar = (scalar: number): M => M.of(M.multiplyByScalar(this.m, scalar));
 
   translate = (tx: number, ty: number = tx): M => M.of(M.translate(this.m, tx, ty));
