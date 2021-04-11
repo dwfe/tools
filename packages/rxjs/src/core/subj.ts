@@ -18,7 +18,7 @@ export class Subj<TData = any> {
   }
 
   value(): Promise<TData> {
-    return this.subj.asObservable().pipe(first()).toPromise();
+    return this.value$.pipe(first()).toPromise();
   }
 
   setValue(value: TData): void {
