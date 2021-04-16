@@ -1,5 +1,5 @@
 import {animationFrame, asap, async, BehaviorSubject, combineLatest, fromEvent, merge, Observable, queue, Subject, Subscription} from 'rxjs'
-import {debounceTime, distinctUntilChanged, filter, first, map, mapTo, mergeMap, shareReplay, skip, switchMap, takeUntil, tap, throttleTime} from 'rxjs/operators'
+import {debounceTime, delay, distinctUntilChanged, filter, first, map, mapTo, mergeMap, shareReplay, skip, switchMap, takeUntil, tap, throttleTime} from 'rxjs/operators'
 
 export {
   Observable,
@@ -19,6 +19,7 @@ export {
   distinctUntilChanged,
   switchMap,
   mergeMap,
+  delay,
   debounceTime,
   throttleTime,
   shareReplay,
