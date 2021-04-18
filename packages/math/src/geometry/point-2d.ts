@@ -1,4 +1,4 @@
-import {IPoint} from './contract'
+import {IDiff, IPoint} from './contract'
 
 class P {
 
@@ -24,6 +24,11 @@ class P {
   static subtract = (p1: IPoint, p2: IPoint): IPoint => ({
     x: p1.x - p2.x,
     y: p1.y - p2.y
+  })
+
+  static diff = (p1: IPoint, p2: IPoint): IDiff => ({
+    dX: p1.x - p2.x,
+    dY: p1.y - p2.y
   })
 
   static add = (p1: IPoint, p2: IPoint): IPoint => ({
