@@ -1,5 +1,5 @@
 import {animationFrame, asap, async, BehaviorSubject, combineLatest, fromEvent, merge, Observable, queue, Subject, Subscription} from 'rxjs'
-import {debounceTime, delay, distinctUntilChanged, filter, first, map, mapTo, mergeMap, pairwise, scan, shareReplay, skip, startWith, switchMap, takeUntil, tap, throttleTime, withLatestFrom} from 'rxjs/operators'
+import {debounceTime, delay, distinctUntilChanged, filter, first, map, mapTo, mergeMap, multicast, pairwise, publish, publishBehavior, publishLast, publishReplay, refCount, scan, share, shareReplay, skip, startWith, switchMap, takeUntil, tap, throttleTime, withLatestFrom} from 'rxjs/operators'
 
 export {
   Observable,
@@ -22,12 +22,20 @@ export {
   delay,
   debounceTime,
   throttleTime,
-  shareReplay,
   takeUntil,
   withLatestFrom,
   startWith,
   pairwise,
   scan,
+
+  multicast,
+  refCount,
+  publish,         // multicast(new Subject())
+  share,           // multicast(() => new Subject()), refCount()
+  publishReplay,   // multicast(new ReplaySubject())
+  shareReplay,     // publishReplay(), refCount() - но с ньюансами
+  publishBehavior, // multicast(new BehaviorSubject())
+  publishLast,     // multicast(new AsyncSubject())
 
   async,          // Schedules on the macro task queue
   asap,           // Schedules on the micro task queue
