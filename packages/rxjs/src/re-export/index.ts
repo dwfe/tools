@@ -1,10 +1,11 @@
-import {animationFrame, asap, async, BehaviorSubject, combineLatest, fromEvent, merge, Observable, queue, Subject, Subscription} from 'rxjs'
+import {animationFrame, asap, async, BehaviorSubject, combineLatest, fromEvent, merge, Observable, queue, ReplaySubject, Subject, Subscription} from 'rxjs'
 import {debounceTime, delay, distinctUntilChanged, filter, finalize, first, map, mapTo, mergeMap, multicast, pairwise, publish, publishBehavior, publishLast, publishReplay, refCount, scan, share, shareReplay, skip, startWith, switchMap, takeUntil, tap, throttleTime, withLatestFrom} from 'rxjs/operators'
 
 export {
   Observable,
   Subscription,
   Subject,
+  ReplaySubject,
   BehaviorSubject,
   fromEvent,
   combineLatest,
