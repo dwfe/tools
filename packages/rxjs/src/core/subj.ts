@@ -1,25 +1,28 @@
-import {first, Observable, share, Subject, takeUntil} from '../re-export'
+import {Observable, share, Subject, takeUntil, tap} from '../re-export'
 import {Stopper} from './stopper'
 
 export class Subj<TData = any> {
 
-  public subj: Subject<TData>
-  public value$: Observable<TData>
-  public stopper = new Stopper()
+  subj: Subject<TData>
+  value: TData | undefined
+  value$: Observable<TData>
+  stopper = new Stopper()
+  isDebug = false
 
   constructor() {
     this.subj = new Subject();
     this.value$ = this.subj.asObservable().pipe(
+      tap(data => {
+        if (this.isDebug)
+          console.log(`obs emit`, data)
+      }),
       takeUntil(this.stopper.ob$),
       share(),
     );
   }
 
-  value(): Promise<TData> {
-    return this.value$.pipe(first()).toPromise();
-  }
-
   setValue(value: TData): void {
+    this.value = value
     this.subj.next(value)
   }
 
