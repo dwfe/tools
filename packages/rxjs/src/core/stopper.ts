@@ -1,4 +1,4 @@
-import {Observable, share, Subject} from 'src/re-export';
+import {Observable, share, Subject} from '../re-export';
 
 export class Stopper {
 
