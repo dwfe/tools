@@ -3,10 +3,12 @@ import {Observable, share, Subject} from '../re-export';
 export class Stopper {
 
   private subj = new Subject<any>()
-  public obs$: Observable<any>
+  public ob$: Observable<any>
 
   constructor() {
-    this.obs$ = this.subj.asObservable().pipe(share())
+    this.ob$ = this.subj.asObservable().pipe(
+      share()
+    )
   }
 
   terminate(): void {

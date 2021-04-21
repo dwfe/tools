@@ -1,4 +1,4 @@
-import {first, Observable, Subject, takeUntil} from '../re-export'
+import {first, Observable, share, Subject, takeUntil} from '../re-export'
 import {Stopper} from './stopper'
 
 export class Subj<TData = any> {
@@ -10,7 +10,8 @@ export class Subj<TData = any> {
   constructor() {
     this.subj = new Subject();
     this.value$ = this.subj.asObservable().pipe(
-      takeUntil(this.stopper.obs$),
+      takeUntil(this.stopper.ob$),
+      share(),
     );
   }
 

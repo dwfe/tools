@@ -10,7 +10,7 @@ export class BehaviourSubj<TData = any> {
   constructor(initValue: TData) {
     this.subj = new BehaviorSubject(initValue);
     this.value$ = this.subj.asObservable().pipe(
-      takeUntil(this.stopper.obs$),
+      takeUntil(this.stopper.ob$),
       multicast(new ReplaySubject(1)),
       refCount(),
       // shareReplay({refCount: false, bufferSize: 1}),
