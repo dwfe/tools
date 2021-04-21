@@ -1,4 +1,4 @@
-import {BehaviorSubject, Observable, shareReplay, takeUntil} from '../re-export'
+import {BehaviorSubject, multicast, Observable, refCount, ReplaySubject, takeUntil} from '../re-export'
 import {Stopper} from './stopper'
 
 export class BehaviourSubj<TData = any> {
@@ -11,7 +11,9 @@ export class BehaviourSubj<TData = any> {
     this.subj = new BehaviorSubject(initValue);
     this.value$ = this.subj.asObservable().pipe(
       takeUntil(this.stopper.obs$),
-      shareReplay({refCount: false, bufferSize: 1}),
+      multicast(new ReplaySubject(1)),
+      refCount(),
+      // shareReplay({refCount: false, bufferSize: 1}),
     );
   }
 
