@@ -11,7 +11,7 @@ export class BehaviourSubj<TData = any> {
     this.subj = new BehaviorSubject(initValue);
     this.value$ = this.subj.asObservable().pipe(
       takeUntil(this.stopper.obs$),
-      shareReplay({refCount: true, bufferSize: 1}),
+      shareReplay({refCount: false, bufferSize: 1}),
     );
   }
 
