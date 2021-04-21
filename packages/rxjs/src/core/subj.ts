@@ -1,4 +1,4 @@
-import {Observable, share, shareReplay, Subject, takeUntil, tap} from '../re-export'
+import {Observable, share, shareReplay, Subject, takeUntil} from '../re-export'
 import {ISubjOpt} from './contract'
 import {Stopper} from './stopper'
 
@@ -8,7 +8,6 @@ export class Subj<TData = any> {
   value$: Observable<TData>
   lastValue: TData | undefined
   stopper = new Stopper()
-  isDebug = false
 
   constructor(opt: ISubjOpt = {type: 'no-share'}, initValue?: TData) {
     this.subj = new Subject()
@@ -37,36 +36,20 @@ export class Subj<TData = any> {
     switch (type) {
       case 'no-share':
         return ob$.pipe(
-          tap(data => {
-            if (this.isDebug)
-              console.log(`obs emit`, data)
-          }),
           takeUntil(this.stopper.ob$),
         );
       case 'share':
         return ob$.pipe(
-          tap(data => {
-            if (this.isDebug)
-              console.log(`obs emit`, data)
-          }),
           takeUntil(this.stopper.ob$),
           share(),
         );
       case 'shareReplay':
         return ob$.pipe(
-          tap(data => {
-            if (this.isDebug)
-              console.log(`obs emit`, data)
-          }),
           takeUntil(this.stopper.ob$),
           shareReplay({refCount: false, bufferSize}),
         );
       case 'shareReplay + refCount':
         return ob$.pipe(
-          tap(data => {
-            if (this.isDebug)
-              console.log(`obs emit`, data)
-          }),
           takeUntil(this.stopper.ob$),
           shareReplay({refCount: true, bufferSize}),
         );

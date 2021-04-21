@@ -1,8 +1,8 @@
 export type TSubjType =
   'no-share' |
-  'share' |
-  'shareReplay' |
-  'shareReplay + refCount'
+  'share' |                // share()
+  'shareReplay' |          // shareReplay({refCount: false, bufferSize})
+  'shareReplay + refCount' // shareReplay({refCount: true, bufferSize})
   ;
 
 export interface ISubjOpt {
