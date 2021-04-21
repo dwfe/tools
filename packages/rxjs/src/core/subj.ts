@@ -6,7 +6,7 @@ export class Subj<TData = any> {
 
   subj: Subject<TData>
   value$: Observable<TData>
-  lastValue: TData | undefined
+  lastValue: TData
   stopper = new Stopper()
 
   constructor(opt: ISubjOpt = {type: 'no-share'}, initValue?: TData) {
