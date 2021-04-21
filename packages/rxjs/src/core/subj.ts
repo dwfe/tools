@@ -1,34 +1,78 @@
-import {Observable, share, Subject, takeUntil, tap} from '../re-export'
+import {Observable, share, shareReplay, Subject, takeUntil, tap} from '../re-export'
+import {ISubjOpt} from './contract'
 import {Stopper} from './stopper'
 
 export class Subj<TData = any> {
 
   subj: Subject<TData>
-  value: TData | undefined
   value$: Observable<TData>
+  lastValue: TData | undefined
   stopper = new Stopper()
   isDebug = false
 
-  constructor() {
-    this.subj = new Subject();
-    this.value$ = this.subj.asObservable().pipe(
-      tap(data => {
-        if (this.isDebug)
-          console.log(`obs emit`, data)
-      }),
-      takeUntil(this.stopper.ob$),
-      share(),
-    );
+  constructor(opt: ISubjOpt = {type: 'no-share'}, initValue?: TData) {
+    this.subj = new Subject()
+    this.value$ = this.getValue$(opt)
+    if (initValue !== undefined)
+      this.setValue(initValue)
   }
 
   setValue(value: TData): void {
-    this.value = value
+    this.lastValue = value
     this.subj.next(value)
   }
 
   stop(): void {
     this.stopper.terminate()
     this.subj.complete()
+  }
+
+
+  getValue$({type, bufferSize = 0}: ISubjOpt): Observable<TData> {
+    if (bufferSize === 0 && (type === 'shareReplay' || type === 'shareReplay + refCount'))
+      bufferSize = 1; // shareReplay is always replayed previous value
+
+    const ob$ = this.subj.asObservable()
+
+    switch (type) {
+      case 'no-share':
+        return ob$.pipe(
+          tap(data => {
+            if (this.isDebug)
+              console.log(`obs emit`, data)
+          }),
+          takeUntil(this.stopper.ob$),
+        );
+      case 'share':
+        return ob$.pipe(
+          tap(data => {
+            if (this.isDebug)
+              console.log(`obs emit`, data)
+          }),
+          takeUntil(this.stopper.ob$),
+          share(),
+        );
+      case 'shareReplay':
+        return ob$.pipe(
+          tap(data => {
+            if (this.isDebug)
+              console.log(`obs emit`, data)
+          }),
+          takeUntil(this.stopper.ob$),
+          shareReplay({refCount: false, bufferSize}),
+        );
+      case 'shareReplay + refCount':
+        return ob$.pipe(
+          tap(data => {
+            if (this.isDebug)
+              console.log(`obs emit`, data)
+          }),
+          takeUntil(this.stopper.ob$),
+          shareReplay({refCount: true, bufferSize}),
+        );
+      default:
+        throw new Error(`Subj.getValue$ unknown type '${type}'`)
+    }
   }
 
 }
