@@ -12,10 +12,7 @@ class M { // exported as WebMatrix
 
 //region Matrix transformations
 
-  invert = (): M | null => {
-    const invM = M.invert(this.m)
-    return invM === null ? null : M.of(invM)
-  }
+  invert = (): M => M.of(M.invert(this.m))
   multiply = (anotherM: M): M => M.of(M.multiply(this.m, anotherM.m));
   multiplyByScalar = (scalar: number): M => M.of(M.multiplyByScalar(this.m, scalar));
 
@@ -74,17 +71,18 @@ class M { // exported as WebMatrix
    *       g h 1 | h = 0      E F 1     (-1)*(b*h-g*d)  (-1)*(a*h-g*c)  1                  0   0   1
    * https://en.wikipedia.org/wiki/Invertible_matrix#Inversion_of_3_%C3%97_3_matrices
    */
-  static invert = (m: TWebMatrix): TWebMatrix | null => {
+  static invert = (m: TWebMatrix): TWebMatrix => {
     const det = M.determinant(m);
-    return det === 0 ? null // matrix is not invertible
-      : M.multiplyByScalar([
-        m[3],
-        -m[1],
-        -m[2],
-        m[0],
-        m[2] * m[5] - m[3] * m[4],
-        m[1] * m[4] - m[0] * m[5],
-      ], 1 / det)
+    if (det === 0) // matrix is not invertible
+      throw new Error(`can't invert matrix ${m} because determinant is 0`)
+    return M.multiplyByScalar([
+      m[3],
+      -m[1],
+      -m[2],
+      m[0],
+      m[2] * m[5] - m[3] * m[4],
+      m[1] * m[4] - m[0] * m[5],
+    ], 1 / det)
   }
 
   /*

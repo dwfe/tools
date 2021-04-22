@@ -4,7 +4,7 @@ import {Point} from '../geometry'
 
 describe(`matrix-2d`, () => {
 
-  test(`1*2 !== 2*1`, () => {
+  test(`1*2 !== 2*1`, () => { // matrix multiplication is not commutative
     const m1 = WebMatrix.of([1, 2, 3, 4, 5, 6])
     const m2 = WebMatrix.of([6, 5, 4, 3, 2, 1])
     const multiply1 = m1.multiply(m2)
