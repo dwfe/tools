@@ -1,8 +1,9 @@
+import {Stoppable} from '@do-while-for-each/common'
 import {Observable, share, shareReplay, Subject, takeUntil} from '../re-export'
 import {ISubjOpt} from './contract'
 import {Stopper} from './stopper'
 
-export class Subj<TData = any> {
+export class Subj<TData = any> implements Stoppable {
 
   subj: Subject<TData>
   value$: Observable<TData>
@@ -11,7 +12,7 @@ export class Subj<TData = any> {
 
   constructor(opt: ISubjOpt = {type: 'no-share'}, initValue?: TData) {
     this.subj = new Subject()
-    this.value$ = this.getValue$(opt)
+    this.value$ = this.createValue$(opt, initValue)
     if (initValue !== undefined)
       this.setValue(initValue)
   }
@@ -22,35 +23,41 @@ export class Subj<TData = any> {
   }
 
   stop(): void {
-    this.stopper.terminate()
+    this.stopper.stop()
     this.subj.complete()
   }
 
 
-  getValue$({type, bufferSize = 0}: ISubjOpt): Observable<TData> {
-    if (bufferSize === 0 && (type === 'shareReplay' || type === 'shareReplay + refCount'))
-      bufferSize = 1; // shareReplay is always replayed previous value
+  createValue$({type, bufferSize = 0}: ISubjOpt, initValue?: TData): Observable<TData> {
+    if (bufferSize === 0
+      && (type === 'shareReplay' || type === 'shareReplay + refCount'))
+      throw new Error(`Instead of 'shareReplay({refCount: false/true, bufferSize: 0})', use 'share()' operator`)
 
-    const ob$ = this.subj.asObservable()
+    const ob$ = this.subj.asObservable().pipe(
+      takeUntil(this.stopper.ob$),
+    )
 
     switch (type) {
       case 'no-share':
-        return ob$.pipe(
-          takeUntil(this.stopper.ob$),
-        );
+        return ob$
       case 'share':
         return ob$.pipe(
-          takeUntil(this.stopper.ob$),
           share(),
         );
+      /**
+       * Will NOT unsubscribe from Source until Source will complete or error,
+       * no matter if there are active subscribers or not.
+       * Instead of shareReplay({refCount: false, bufferSize: 0}), use share()
+       */
       case 'shareReplay':
         return ob$.pipe(
-          takeUntil(this.stopper.ob$),
           shareReplay({refCount: false, bufferSize}),
         );
+      /**
+       * Instead of shareReplay({refCount: true, bufferSize: 0}), use share()
+       */
       case 'shareReplay + refCount':
         return ob$.pipe(
-          takeUntil(this.stopper.ob$),
           shareReplay({refCount: true, bufferSize}),
         );
       default:

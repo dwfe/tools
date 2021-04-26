@@ -1,17 +1,15 @@
-import {Observable, share, Subject} from '../re-export';
+import {Stoppable} from '@do-while-for-each/common'
+import {share, Subject} from '../re-export'
 
-export class Stopper {
+export class Stopper implements Stoppable {
 
-  private subj = new Subject<any>()
-  public ob$: Observable<any>
+  subj = new Subject<boolean>()
 
-  constructor() {
-    this.ob$ = this.subj.asObservable().pipe(
-      share()
-    )
-  }
+  ob$ = this.subj.asObservable().pipe(
+    share()
+  )
 
-  terminate(): void {
+  stop(): void {
     this.subj.next(true)
     this.subj.complete()
   }
