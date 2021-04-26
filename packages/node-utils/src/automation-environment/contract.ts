@@ -1,6 +1,6 @@
 import {BrowserContextOptions, LaunchOptions, Mouse, Page} from 'playwright'
+import {IStoppable, Type} from '@do-while-for-each/common'
 import {IPoint} from '@do-while-for-each/math'
-import {Type} from '@do-while-for-each/common'
 import {PixelmatchOptions} from 'pixelmatch'
 import {PNG} from 'pngjs'
 
@@ -42,7 +42,7 @@ export const defaultPixelmatchOptions: PixelmatchOptions = {
  *    - надо ли сохранить response в файл? -> поле 'saveResponses'
  *    - надо ли мокать ответ сервера?      -> поле 'mockResponses'
  */
-export interface ITask {
+export interface ITask extends Partial<IStoppable> {
 
   /**
    * Каждая задача должна:

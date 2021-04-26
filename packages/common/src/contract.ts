@@ -2,6 +2,6 @@ export interface Type<T> extends Function { // тип описывает кон�
   new(...args: any[]): T;
 }
 
-export interface Stoppable {
+export interface IStoppable {
   stop(): void;
 }

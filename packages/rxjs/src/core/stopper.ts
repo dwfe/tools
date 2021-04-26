@@ -1,7 +1,7 @@
-import {Stoppable} from '@do-while-for-each/common'
+import {IStoppable} from '@do-while-for-each/common'
 import {share, Subject} from '../re-export'
 
-export class Stopper implements Stoppable {
+export class Stopper implements IStoppable {
 
   subj = new Subject<boolean>()
 

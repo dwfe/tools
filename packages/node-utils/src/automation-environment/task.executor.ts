@@ -1,6 +1,6 @@
-import {IAutomationEnvironmentOptions, IStorage, ITask} from './contract';
-import {AutomationEnvironment} from './automation.environment';
-import {PngUtils} from './png.utils';
+import {IAutomationEnvironmentOptions, IStorage, ITask} from './contract'
+import {AutomationEnvironment} from './automation.environment'
+import {PngUtils} from './png.utils'
 
 export class TaskExecutor {
 
@@ -143,6 +143,7 @@ export class TaskExecutor {
   private finishTask(task: ITask) {
     task.isActive = false;
     task.isFinished = true;
+    task.stop?.()
 
     if (this.options.isDebug)
       console.timeEnd(task.id);

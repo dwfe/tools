@@ -1,12 +1,12 @@
-import {BehaviourSubj, filter, first} from '@do-while-for-each/rxjs';
+import {filter, first, Subj} from '@do-while-for-each/rxjs';
 import {Page} from 'playwright';
 import {IImgCompareResult, ITask, TCommand} from './contract';
 
 export abstract class AbstractTask implements ITask {
 
-  private allDataReceivedWrap = new BehaviourSubj<any>(null);
-  private screenshotWrap = new BehaviourSubj<Buffer>(null);
-  private compareScreenshotWrap = new BehaviourSubj<IImgCompareResult>(null);
+  private allDataReceivedWrap = new Subj<any>({type: 'shareReplay', bufferSize: 1}, null);
+  private screenshotWrap = new Subj<Buffer>({type: 'shareReplay', bufferSize: 1}, null);
+  private compareScreenshotWrap = new Subj<IImgCompareResult>({type: 'shareReplay', bufferSize: 1}, null);
 
   constructor(public readonly id: string) {
   }
@@ -39,10 +39,16 @@ export abstract class AbstractTask implements ITask {
     return result(this.compareScreenshotWrap);
   }
 
+  stop(): void {
+    this.allDataReceivedWrap.stop()
+    this.screenshotWrap.stop()
+    this.compareScreenshotWrap.stop()
+  }
+
 }
 
-const result = async <T>(wrap: BehaviourSubj<T>): Promise<T> =>
-  wrap.value
+const result = async <T>(wrap: Subj<T>): Promise<T> =>
+  wrap.lastValue
   || wrap.value$.pipe(
   filter(data => !!data),
   first()
