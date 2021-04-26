@@ -1,5 +1,5 @@
 import {IStoppable} from '@do-while-for-each/common'
-import {Observable, share, shareReplay, Subject, takeUntil} from '../re-export'
+import {Observable, share, shareReplay, startWith, Subject, takeUntil} from '../re-export'
 import {ISubjOpt} from './contract'
 import {Stopper} from './stopper'
 
@@ -13,8 +13,6 @@ export class Subj<TData = any> implements IStoppable {
   constructor(opt: ISubjOpt = {type: 'no-share'}, initValue?: TData) {
     this.subj = new Subject()
     this.value$ = this.createValue$(opt, initValue)
-    if (initValue !== undefined)
-      this.setValue(initValue)
   }
 
   setValue(value: TData): void {
@@ -33,9 +31,15 @@ export class Subj<TData = any> implements IStoppable {
       && (type === 'shareReplay' || type === 'shareReplay + refCount'))
       throw new Error(`Instead of 'shareReplay({refCount: false/true, bufferSize: 0})', use 'share()' operator`)
 
-    const ob$ = this.subj.asObservable().pipe(
+    let ob$ = this.subj.asObservable().pipe(
       takeUntil(this.stopper.ob$),
     )
+    if (initValue !== undefined && this.lastValue === undefined) {
+      this.lastValue = initValue
+      ob$ = ob$.pipe(
+        startWith(initValue),
+      )
+    }
 
     switch (type) {
       case 'no-share':
