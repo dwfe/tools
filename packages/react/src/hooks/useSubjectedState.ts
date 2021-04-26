@@ -12,7 +12,7 @@ export const useSubjectedState = <T = any>(initValue: T): [Subj<T>, (value: T) =
   }, [wrap, renderRunFn])
 
   useEffect(() => {
-    wrap.stop()
+    return () => wrap.stop()
   }, [])
 
   return [wrap, setValue]
