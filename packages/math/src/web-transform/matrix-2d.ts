@@ -136,7 +136,6 @@ class M { // exported as WebMatrix
   static translate = (m: TWebMatrix, tx: number, ty: number): TWebMatrix => M.multiply(m, [1, 0, 0, 1, tx, ty]);
   static translateX = (m: TWebMatrix, t: number): TWebMatrix => M.translate(m, t, 0);
   static translateY = (m: TWebMatrix, t: number): TWebMatrix => M.translate(m, 0, t);
-
   static translateIdentity = (tx: number, ty: number): TWebMatrix => M.translate(identity, tx, ty);
 
   /*
