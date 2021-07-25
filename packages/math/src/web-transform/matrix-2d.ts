@@ -1,11 +1,13 @@
-import {Angle, AngleType, IPoint} from '../geometry'
+import {Angle, AngleType, TPoint} from '../geometry'
 import {TWebMatrix} from './contract'
+
+const identity: TWebMatrix = [1, 0, 0, 1, 0, 0];
 
 class M { // exported as WebMatrix
 
-  static of = (m?: TWebMatrix): M => new M(m);
+  static of = (m: TWebMatrix = M.identity()): M => new M(m);
 
-  constructor(public readonly m: TWebMatrix = M.identity()) {
+  constructor(public readonly m: TWebMatrix) {
   }
 
   determinant = (): number => M.determinant(this.m);
@@ -36,11 +38,11 @@ class M { // exported as WebMatrix
 
 //region Data transformations
 
-  apply = (point: IPoint): IPoint => M.apply(this.m, point);
+  apply = (point: TPoint): TPoint => M.apply(this.m, point);
 
 //endregion
 
-  isEquals = ({m}: M): boolean => M.equal(this.m, m);
+  isEquals = (anotherM: M): boolean => M.equal(this.m, anotherM.m);
   toJSON = () => [...this.m];
   toString = () => this.m.join(', ');
   toStyleValue = () => `matrix(${this.toString()})`;
@@ -53,7 +55,7 @@ class M { // exported as WebMatrix
    *                    0 0 1
    * https://en.wikipedia.org/wiki/Identity_matrix
    */
-  static identity = (): TWebMatrix => [1, 0, 0, 1, 0, 0];
+  static identity = (): TWebMatrix => [...identity];
 
   /*
    * The Determinant of a matrix by the Laplace expansion:
@@ -117,10 +119,10 @@ class M { // exported as WebMatrix
    *   b d f  *  y  =  b*x+d*y+f
    *   0 0 1     1     1
    */
-  static apply = (m: TWebMatrix, p: IPoint): IPoint => ({
-    x: m[0] * p.x + m[2] * p.y + m[4],
-    y: m[1] * p.x + m[3] * p.y + m[5]
-  });
+  static apply = (m: TWebMatrix, p: TPoint): TPoint => ([
+    m[0] * p[0] + m[2] * p[1] + m[4],
+    m[1] * p[0] + m[3] * p[1] + m[5]
+  ]);
 
   /*
    * Translate is:
@@ -134,6 +136,8 @@ class M { // exported as WebMatrix
   static translate = (m: TWebMatrix, tx: number, ty: number): TWebMatrix => M.multiply(m, [1, 0, 0, 1, tx, ty]);
   static translateX = (m: TWebMatrix, t: number): TWebMatrix => M.translate(m, t, 0);
   static translateY = (m: TWebMatrix, t: number): TWebMatrix => M.translate(m, 0, t);
+
+  static translateIdentity = (tx: number, ty: number): TWebMatrix => M.translate(identity, tx, ty);
 
   /*
    * Scale is:

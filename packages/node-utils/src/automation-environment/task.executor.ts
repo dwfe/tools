@@ -76,7 +76,7 @@ export class TaskExecutor {
           }
           case 'mouseClick': {
             const {point, options} = command.data;
-            await page.mouse.click(point.x, point.y, options);
+            await page.mouse.click(point[0], point[1], options);
             break;
           }
           case 'login': {

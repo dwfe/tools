@@ -1,6 +1,6 @@
 import {BrowserContextOptions, LaunchOptions, Mouse, Page} from 'playwright'
 import {IStoppable, Type} from '@do-while-for-each/common'
-import {IPoint} from '@do-while-for-each/math'
+import {TPoint} from '@do-while-for-each/math'
 import {PixelmatchOptions} from 'pixelmatch'
 import {PNG} from 'pngjs'
 
@@ -185,7 +185,7 @@ export interface IFillCommand {
 export interface IMouseClickCommand {
   type: 'mouseClick';
   data: {
-    point: IPoint;
+    point: TPoint;
     options?: Parameters<Mouse['click']>[2];
   };
 }

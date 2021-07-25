@@ -65,7 +65,7 @@ export class Subj<TData = any> implements IStoppable {
           shareReplay({refCount: true, bufferSize}),
         );
       default:
-        throw new Error(`Subj.getValue$ unknown type '${type}'`)
+        throw new Error(`Subj.createValue$ unknown type '${type}'`)
     }
   }
 

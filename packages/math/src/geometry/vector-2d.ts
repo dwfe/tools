@@ -1,19 +1,19 @@
-import {IPoint, IVector} from './contract'
+import {TPoint, TVector} from './contract'
 import {Point} from './point-2d'
 
 class V {
 
-  static of = (v: IVector): V => new V(v)
+  static of = (v: TVector = [[0, 0], [1, 1]]): V => new V(v)
 
-  constructor(public readonly v: IVector) {
+  constructor(public readonly v: TVector) {
   }
 
-  middle = (): IPoint => V.middle(this.v)
+  middle = (): TPoint => V.middle(this.v)
   len = (): number => V.len(this.v)
 
 
-  static middle = (v: IVector): IPoint => Point.middle(v[0], v[1]);
-  static len = (v: IVector): number => Point.distance(v[0], v[1])
+  static middle = (v: TVector): TPoint => Point.middle(v[0], v[1]);
+  static len = (v: TVector): number => Point.distance(v[0], v[1])
 
 }
 
