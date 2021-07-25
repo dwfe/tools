@@ -42,10 +42,10 @@ class M { // exported as WebMatrix
 
 //endregion
 
-  isEquals = (anotherM: M): boolean => M.equal(this.m, anotherM.m);
   toJSON = () => [...this.m];
-  toString = () => this.m.join(', ');
-  toStyleValue = () => `matrix(${this.toString()})`;
+  toString = () => M.toString(this.m);
+  toStyleValue = () => M.toStyleValue(this.m);
+  isEquals = (anotherM: M): boolean => M.isEquals(this.m, anotherM.m);
 
 
   /*
@@ -192,7 +192,7 @@ class M { // exported as WebMatrix
   static skewY = (m: TWebMatrix, angle: number, angleType?: AngleType): TWebMatrix => M.skew(m, 0, angle, angleType);
 
 
-  static equal = (m1: TWebMatrix, m2: TWebMatrix): boolean =>
+  static isEquals = (m1: TWebMatrix, m2: TWebMatrix): boolean =>
     Math.abs(m1[0] - m2[0]) < ACCURACY &&
     Math.abs(m1[1] - m2[1]) < ACCURACY &&
     Math.abs(m1[2] - m2[2]) < ACCURACY &&
@@ -200,6 +200,8 @@ class M { // exported as WebMatrix
     Math.abs(m1[4] - m2[4]) < ACCURACY &&
     Math.abs(m1[5] - m2[5]) < ACCURACY
   ;
+  static toString = (m: TWebMatrix) => m.join(', ');
+  static toStyleValue = (m: TWebMatrix) => `matrix(${M.toString(m)})`;
 }
 
 const ACCURACY = 0.0001;
