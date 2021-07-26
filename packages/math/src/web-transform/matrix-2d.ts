@@ -205,6 +205,45 @@ class M { // exported as WebMatrix
   ;
   static toString = (m: TWebMatrix) => m.join(', ');
   static toStyleValue = (m: TWebMatrix) => `matrix(${M.toString(m)})`;
+
+
+//region Complex transforms
+
+  /**
+   * The algorithm is based on
+   *   https://medium.com/@benjamin.botto/zooming-at-the-mouse-coordinates-with-affine-transformations-86e7312fd50b#id_token=eyJhbGciOiJSUzI1NiIsImtpZCI6IjNkZjBhODMxZTA5M2ZhZTFlMjRkNzdkNDc4MzQ0MDVmOTVkMTdiNTQiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJuYmYiOjE2MjczMDM4NjQsImF1ZCI6IjIxNjI5NjAzNTgzNC1rMWs2cWUwNjBzMnRwMmEyamFtNGxqZGNtczAwc3R0Zy5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsInN1YiI6IjExNjczOTgzOTIzODQ1NTk2OTI4NyIsImVtYWlsIjoiZ29uem8uYmFyZEBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYXpwIjoiMjE2Mjk2MDM1ODM0LWsxazZxZTA2MHMydHAyYTJqYW00bGpkY21zMDBzdHRnLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwibmFtZSI6IkdvbnpvIEJhcmQiLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EtL0FPaDE0R2hKTEFhenFmT0xpMk9SZXVtWE92WGtsbmJmX21tZHk3MVJYZElTPXM5Ni1jIiwiZ2l2ZW5fbmFtZSI6IkdvbnpvIiwiZmFtaWx5X25hbWUiOiJCYXJkIiwiaWF0IjoxNjI3MzA0MTY0LCJleHAiOjE2MjczMDc3NjQsImp0aSI6ImMyNzA3ZjJhOWQ4YTQ4NzljZDExMGNlOTlhZTQ4NWFmNTdhMjQ4YjgifQ.Wv3Lb8ArxlUqvGrWhDE6JkMm48Cwx8CYANAkoGljovPY1Acveycet2EZm2S1VATqjZEkX6Y-rZzXcdGYe2qAth91TtVishnJSWrtH3P9G5bXR3xP3lQ5rdwWLW8UJ51KnFl2cj5aQy8DOrmXkEAMvBZEwoDEN6StA6ZlyZwv96X1al4OY_q50jFKHUV3oGK4PS4cHWM59lP-fvXJH25D7iio0O3w9gvP3MHHyG7ckhswq1gsaiEbS2XJHrbjLJwLJ4aR8RjGF8Is6uy3gEl5WFI6OHSiW5bA0fWimsKXvbhSbAUGYndWjt7hdy8gKh9aGHnSrSQxnPc6g2s-PCbUtg
+   */
+  static scaleAtPoint(p: TPoint, sx: number, sy = sx): TWebMatrix {
+
+    // (1) Translate the world such that P is at the origin
+    const toPoint = M.translateIdentity(p[0], p[1])
+
+    // (2) Scale the world
+    const scale = M.scaleIdentity(sx, sy)
+
+    // (3) Translate the world back such that P is at its initial location
+    const toPointInvert = M.invert(toPoint)
+
+    return M.multiplyArr([
+      toPoint,
+      scale,
+      toPointInvert,
+    ])
+  }
+
+  /**
+   * Matrix multiplication is not commutative and it applies from right to left.
+   * That is, the last matrix is applied first.
+   */
+  static multiplyArr(mArr: TWebMatrix[]): TWebMatrix {
+    let m = identity
+    for (let i = mArr.length - 1; i >= 0; i--)
+      m = M.multiply(mArr[i], m)
+    return m;
+  }
+
+//endregion
+
 }
 
 const ACCURACY = 0.0001;
