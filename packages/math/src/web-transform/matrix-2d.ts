@@ -150,6 +150,7 @@ class M { // exported as WebMatrix
   static scale = (m: TWebMatrix, sx: number, sy: number): TWebMatrix => M.multiply(m, [sx, 0, 0, sy, 0, 0]);
   static scaleX = (m: TWebMatrix, s: number): TWebMatrix => M.scale(m, s, 1);
   static scaleY = (m: TWebMatrix, s: number): TWebMatrix => M.scale(m, 1, s);
+  static scaleIdentity = (sx: number, sy: number): TWebMatrix => M.scale(identity, sx, sy);
 
   /*
    * Rotate is:
@@ -174,6 +175,7 @@ class M { // exported as WebMatrix
     const sin = Math.sin(radians)
     return M.multiply(m, [cos, sin, -sin, cos, 0, 0])
   }
+  static rotateIdentity = (angle: number, angleType?: AngleType): TWebMatrix => M.rotate(identity, angle, angleType);
 
   /*
    * Skew is:
@@ -189,6 +191,7 @@ class M { // exported as WebMatrix
   ;
   static skewX = (m: TWebMatrix, angle: number, angleType?: AngleType): TWebMatrix => M.skew(m, angle, 0, angleType);
   static skewY = (m: TWebMatrix, angle: number, angleType?: AngleType): TWebMatrix => M.skew(m, 0, angle, angleType);
+  static skewIdentity = (ax: number, ay: number, angleType?: AngleType): TWebMatrix => M.skew(identity, ax, ay, angleType);
 
 
   static isEquals = (m1: TWebMatrix, m2: TWebMatrix): boolean =>
