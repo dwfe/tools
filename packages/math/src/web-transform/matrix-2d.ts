@@ -105,6 +105,18 @@ class M { // exported as WebMatrix
     m1[1] * m2[4] + m1[3] * m2[5] + m1[5]  // f
   ])
 
+  /**
+   * m = m1 * m2 * ... * mN * m
+   *   Matrix multiplication is not commutative and it applies from right to left.
+   *   That is, the last matrix (mN) is applied first.
+   */
+  static multiplySequence(seq: TWebMatrix[]): TWebMatrix {
+    let m = identity
+    for (let i = seq.length - 1; i >= 0; i--)
+      m = M.multiply(seq[i], m)
+    return m;
+  }
+
   static multiplyByScalar = (m: TWebMatrix, scalar: number): TWebMatrix => ([
     m[0] * scalar,
     m[1] * scalar,
@@ -231,16 +243,22 @@ class M { // exported as WebMatrix
     ])
   }
 
-  /**
-   * Result = m1 * m2 * ... * mN * Result
-   *   Matrix multiplication is not commutative and it applies from right to left.
-   *   That is, the last matrix (mN) is applied first.
-   */
-  static multiplySequence(seq: TWebMatrix[]): TWebMatrix {
-    let m = identity
-    for (let i = seq.length - 1; i >= 0; i--)
-      m = M.multiply(seq[i], m)
-    return m;
+  static rotateAtPoint(p: TPoint, angle: number, angleType?: AngleType): TWebMatrix {
+
+    // (1) Translate the world such that P is at the origin
+    const toPoint = M.translateIdentity(p[0], p[1])
+
+    // (2) Rotate the world
+    const rotate = M.rotateIdentity(angle, angleType)
+
+    // (3) Translate the world back such that P is at its initial location
+    const toPointInvert = M.invert(toPoint)
+
+    return M.multiplySequence([
+      toPoint,
+      rotate,
+      toPointInvert,
+    ])
   }
 
 //endregion
