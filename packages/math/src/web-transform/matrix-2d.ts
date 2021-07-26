@@ -148,10 +148,10 @@ class M { // exported as WebMatrix
    * https://developer.mozilla.org/en-US/docs/Web/CSS/transform-function/scaleX
    * https://developer.mozilla.org/en-US/docs/Web/CSS/transform-function/scaleY
    */
-  static scale = (m: TWebMatrix, sx: number, sy: number): TWebMatrix => M.multiply(m, [sx, 0, 0, sy, 0, 0]);
+  static scale = (m: TWebMatrix, sx: number, sy = sx): TWebMatrix => M.multiply(m, [sx, 0, 0, sy, 0, 0]);
   static scaleX = (m: TWebMatrix, s: number): TWebMatrix => M.scale(m, s, 1);
   static scaleY = (m: TWebMatrix, s: number): TWebMatrix => M.scale(m, 1, s);
-  static scaleIdentity = (sx: number, sy: number): TWebMatrix => M.scale(identity, sx, sy);
+  static scaleIdentity = (sx: number, sy = sx): TWebMatrix => M.scale(identity, sx, sy);
 
   /*
    * Rotate is:
