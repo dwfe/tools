@@ -224,7 +224,7 @@ class M { // exported as WebMatrix
     // (3) Translate the world back such that P is at its initial location
     const toPointInvert = M.invert(toPoint)
 
-    return M.multiplyArr([
+    return M.multiplySequence([
       toPoint,
       scale,
       toPointInvert,
@@ -236,10 +236,10 @@ class M { // exported as WebMatrix
    *   Matrix multiplication is not commutative and it applies from right to left.
    *   That is, the last matrix (mN) is applied first.
    */
-  static multiplyArr(mArr: TWebMatrix[]): TWebMatrix {
+  static multiplySequence(seq: TWebMatrix[]): TWebMatrix {
     let m = identity
-    for (let i = mArr.length - 1; i >= 0; i--)
-      m = M.multiply(mArr[i], m)
+    for (let i = seq.length - 1; i >= 0; i--)
+      m = M.multiply(seq[i], m)
     return m;
   }
 
