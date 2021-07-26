@@ -232,8 +232,9 @@ class M { // exported as WebMatrix
   }
 
   /**
-   * Matrix multiplication is not commutative and it applies from right to left.
-   * That is, the last matrix is applied first.
+   * Result = m1 * m2 * ... * mN * Result
+   *   Matrix multiplication is not commutative and it applies from right to left.
+   *   That is, the last matrix (mN) is applied first.
    */
   static multiplyArr(mArr: TWebMatrix[]): TWebMatrix {
     let m = identity
