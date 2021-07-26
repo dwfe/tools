@@ -21,6 +21,7 @@ class M { // exported as WebMatrix
   translate = (tx: number, ty: number = tx): M => M.of(M.translate(this.m, tx, ty));
   translateX = (t: number): M => M.of(M.translateX(this.m, t));
   translateY = (t: number): M => M.of(M.translateY(this.m, t));
+  translateInvert = (tx: number, ty: number = tx): M => M.of(M.invert(M.translate(this.m, tx, ty)));
 
   scale = (sx: number, sy: number = sx): M => M.of(M.scale(this.m, sx, sy));
   scaleX = (s: number): M => M.of(M.scaleX(this.m, s));
