@@ -43,9 +43,9 @@ class M { // exported as WebMatrix
 
 //endregion
 
-  toJSON = () => [...this.m];
-  toString = () => M.toString(this.m);
-  toStyleValue = () => M.toStyleValue(this.m);
+  toJSON = (): TWebMatrix => [...this.m];
+  toString = (): string => M.toString(this.m);
+  toStyleValue = (): string => M.toStyleValue(this.m);
   isEquals = (anotherM: M): boolean => M.isEquals(this.m, anotherM.m);
 
 
