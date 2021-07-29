@@ -105,18 +105,6 @@ class M { // exported as WebMatrix
     m1[1] * m2[4] + m1[3] * m2[5] + m1[5]  // f
   ];
 
-  /**
-   * m = m1 * m2 * ... * mN * m
-   *   Matrix multiplication is not commutative and it applies from right to left.
-   *   That is, the last matrix (mN) is applied first.
-   */
-  static multiplySequence(seq: TWebMatrix[]): TWebMatrix {
-    let m = identity
-    for (let i = seq.length - 1; i >= 0; i--)
-      m = M.multiply(seq[i], m)
-    return m;
-  }
-
   static multiplyByScalar = (m: TWebMatrix, scalar: number): TWebMatrix => [
     m[0] * scalar,
     m[1] * scalar,
@@ -226,18 +214,39 @@ class M { // exported as WebMatrix
    *   https://medium.com/@benjamin.botto/zooming-at-the-mouse-coordinates-with-affine-transformations-86e7312fd50b#id_token=eyJhbGciOiJSUzI1NiIsImtpZCI6IjNkZjBhODMxZTA5M2ZhZTFlMjRkNzdkNDc4MzQ0MDVmOTVkMTdiNTQiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJuYmYiOjE2MjczMDM4NjQsImF1ZCI6IjIxNjI5NjAzNTgzNC1rMWs2cWUwNjBzMnRwMmEyamFtNGxqZGNtczAwc3R0Zy5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsInN1YiI6IjExNjczOTgzOTIzODQ1NTk2OTI4NyIsImVtYWlsIjoiZ29uem8uYmFyZEBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYXpwIjoiMjE2Mjk2MDM1ODM0LWsxazZxZTA2MHMydHAyYTJqYW00bGpkY21zMDBzdHRnLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwibmFtZSI6IkdvbnpvIEJhcmQiLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EtL0FPaDE0R2hKTEFhenFmT0xpMk9SZXVtWE92WGtsbmJmX21tZHk3MVJYZElTPXM5Ni1jIiwiZ2l2ZW5fbmFtZSI6IkdvbnpvIiwiZmFtaWx5X25hbWUiOiJCYXJkIiwiaWF0IjoxNjI3MzA0MTY0LCJleHAiOjE2MjczMDc3NjQsImp0aSI6ImMyNzA3ZjJhOWQ4YTQ4NzljZDExMGNlOTlhZTQ4NWFmNTdhMjQ4YjgifQ.Wv3Lb8ArxlUqvGrWhDE6JkMm48Cwx8CYANAkoGljovPY1Acveycet2EZm2S1VATqjZEkX6Y-rZzXcdGYe2qAth91TtVishnJSWrtH3P9G5bXR3xP3lQ5rdwWLW8UJ51KnFl2cj5aQy8DOrmXkEAMvBZEwoDEN6StA6ZlyZwv96X1al4OY_q50jFKHUV3oGK4PS4cHWM59lP-fvXJH25D7iio0O3w9gvP3MHHyG7ckhswq1gsaiEbS2XJHrbjLJwLJ4aR8RjGF8Is6uy3gEl5WFI6OHSiW5bA0fWimsKXvbhSbAUGYndWjt7hdy8gKh9aGHnSrSQxnPc6g2s-PCbUtg
    */
   static scaleAtPoint = (p: TPoint, sx: number, sy = sx): TWebMatrix =>
-    M.multiplySequence([
-      [1, 0, 0, 1, p[0], p[1]],   // (1) Translate the world such that P is at the origin
+    M.multiplySequence3(
+      [1, 0, 0, 1, p[0], p[1]],   // (1) Translate the world such that p is at the origin
       M.scaleIdentity(sx, sy),    // (2) Scale the world
-      [1, 0, 0, 1, -p[0], -p[1]], // (3) Translate the world back such that P is at its initial location
-    ]);
+      [1, 0, 0, 1, -p[0], -p[1]], // (3) Translate the world back such that p is at its initial location
+    );
 
   static rotateAtPoint = (p: TPoint, angle: number, angleType?: AngleType): TWebMatrix =>
-    M.multiplySequence([
-      [1, 0, 0, 1, p[0], p[1]],           // (1) Translate the world such that P is at the origin
+    M.multiplySequence3(
+      [1, 0, 0, 1, p[0], p[1]],           // (1) Translate the world such that p is at the origin
       M.rotateIdentity(angle, angleType), // (2) Rotate the world
-      [1, 0, 0, 1, -p[0], -p[1]],         // (3) Translate the world back such that P is at its initial location
-    ]);
+      [1, 0, 0, 1, -p[0], -p[1]],         // (3) Translate the world back such that p is at its initial location
+    );
+
+
+  /**
+   * m = m1 * m2 * ... * mN * m
+   *   Matrix multiplication is not commutative and it applies from right to left.
+   *   That is, the last matrix (mN) is applied first.
+   */
+  static multiplySequence(seq: TWebMatrix[]): TWebMatrix {
+    let m = identity
+    for (let i = seq.length - 1; i >= 0; i--)
+      m = M.multiply(seq[i], m)
+    return m;
+  }
+
+  static multiplySequence3(m1: TWebMatrix, m2: TWebMatrix, m3: TWebMatrix): TWebMatrix {
+    let m = identity
+    m = M.multiply(m3, m)
+    m = M.multiply(m2, m)
+    m = M.multiply(m1, m)
+    return m;
+  }
 
 //endregion
 
