@@ -1,5 +1,5 @@
 import {IStoppable} from '@do-while-for-each/common'
-import {Observable, share, shareReplay, startWith, Subject, takeUntil} from '../re-export'
+import {first, Observable, share, shareReplay, startWith, Subject, takeUntil} from '../re-export'
 import {ISubjOpt} from './contract'
 import {Stopper} from './stopper'
 
@@ -18,6 +18,13 @@ export class Subj<TData = any> implements IStoppable {
   setValue(value: TData): void {
     this.lastValue = value
     this.subj.next(value)
+  }
+
+  /**
+   * It may be necessary to wait for a value that does not exist yet, but it is expected in the future
+   */
+  value(): Promise<TData> {
+    return this.value$.pipe(first()).toPromise();
   }
 
   stop(): void {
