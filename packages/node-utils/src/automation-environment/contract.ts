@@ -16,6 +16,10 @@ export interface IAutomationEnvironmentOptions {
   },
   baseUrl?: string; // используется там, где надо собрать url из относительного пути. Например, TaskExecutor при выполнении команды 'goto'
   isDebug?: boolean;
+  isLeaveOpen?: {
+    env?: boolean;           // флаг, надо ли закрыть окружение, когда у него будет вызван метод .close()
+    pageOnTaskEnd?: boolean; // флаг, надо ли оставить страницу открытой после выполнения всех команд задачи
+  },
 }
 
 // https://www.npmjs.com/package/pixelmatch#pixelmatchimg1-img2-output-width-height-options
@@ -58,6 +62,7 @@ export interface ITask extends Partial<IStoppable> {
   page?: Page; // страница, на которой выполняется задача
   saveResponses?: boolean; // флаг, надо ли сохранять ответ сервера (потом может быть использован как mock-данные)
   mockResponses?: boolean; // флаг, надо ли вместо прямого обращения к серверу брать ответ из mock-данных
+  delayForDraw?: number;
 
   initReqInterceptors?: () => void;
   setAllDataReceived?: () => void;
@@ -156,7 +161,7 @@ export interface IClosePageCommand {
 
 export interface IWaitCommand {
   type: 'wait';
-  data: number;
+  data?: number;
 }
 
 export interface IWaitForAllDataReceivedCommand {

@@ -1,6 +1,8 @@
+import {isNumeric} from '@do-while-for-each/common'
 import {IAutomationEnvironmentOptions, IStorage, ITask} from './contract'
 import {AutomationEnvironment} from './automation.environment'
 import {PngUtils} from './png.utils'
+import {joinUrl} from './common'
 
 export class TaskExecutor {
 
@@ -57,7 +59,8 @@ export class TaskExecutor {
             break;
           }
           case 'wait': {
-            await page.waitForTimeout(command.data);
+            if (isNumeric(command.data))
+              await page.waitForTimeout(command.data);
             break;
           }
           case 'waitForAllDataReceived': {
@@ -143,7 +146,6 @@ export class TaskExecutor {
   private finishTask(task: ITask) {
     task.isActive = false;
     task.isFinished = true;
-    task.stop?.()
 
     if (this.options.isDebug)
       console.timeEnd(task.id);
@@ -151,10 +153,4 @@ export class TaskExecutor {
 
 //endregion
 
-}
-
-const joinUrl = (path: string, baseUrl: string) => {
-  if (!baseUrl || path.includes('http://') || path.includes('https://'))
-    return path;
-  return baseUrl + (path[0] === '/' ? path : `/${path}`);
 }

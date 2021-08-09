@@ -28,7 +28,8 @@ export class AutomationEnvironment {
   }
 
   close() {
-    this.browser.close();
+    if (!this.options.isLeaveOpen?.env)
+      this.browser.close();
     this.storage.clean();
   }
 
