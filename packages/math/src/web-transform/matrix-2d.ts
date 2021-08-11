@@ -205,6 +205,14 @@ class M { // exported as WebMatrix
   ;
   static toString = (m: TWebMatrix): string => m.join(', ');
   static toStyleValue = (m: TWebMatrix): string => `matrix(${M.toString(m)})`;
+  static toDOMMatrix2DInit = (m: TWebMatrix): DOMMatrix2DInit => ({ // https://drafts.fxtf.org/geometry/#dommatrixinit-dictionary
+    a: m[0],
+    b: m[1],
+    c: m[2],
+    d: m[3],
+    e: m[4],
+    f: m[5],
+  });
 
 
 //region Complex transforms

@@ -1,4 +1,4 @@
-export const isNumeric = data =>
+export const isNumber = data =>
   !isNaN(data) && !isNaN(parseFloat(data)) && isFinite(data)
 ;
 
