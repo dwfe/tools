@@ -1,4 +1,4 @@
-import {isNumeric} from '@do-while-for-each/common'
+import {isNumber} from '@do-while-for-each/math'
 import {IAutomationEnvironmentOptions, IStorage, ITask} from './contract'
 import {AutomationEnvironment} from './automation.environment'
 import {PngUtils} from './png.utils'
@@ -59,7 +59,7 @@ export class TaskExecutor {
             break;
           }
           case 'wait': {
-            if (isNumeric(command.data))
+            if (isNumber(command.data))
               await page.waitForTimeout(command.data);
             break;
           }
