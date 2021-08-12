@@ -12,7 +12,7 @@ class P {
   add = (p: TPoint): P => P.of(P.add(this.p, p))
   middle = (p: TPoint): P => P.of(P.middle(this.p, p))
   distance = (p: TPoint): number => P.distance(this.p, p)
-  isEquals = (p: TPoint): boolean => P.isEquals(this.p, p);
+  isEqual = (p: TPoint): boolean => P.isEqual(this.p, p);
 
 
   static k = (kx: number, ky = kx) =>
@@ -39,7 +39,7 @@ class P {
     return Math.sqrt(Math.pow(result[0], 2) + Math.pow(result[1], 2))
   }
 
-  static isEquals = (p1: TPoint, p2: TPoint): boolean =>
+  static isEqual = (p1: TPoint, p2: TPoint): boolean =>
     Math.abs(p1[0] - p2[0]) < ACCURACY &&
     Math.abs(p1[1] - p2[1]) < ACCURACY
   ;
