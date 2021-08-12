@@ -1,5 +1,5 @@
 import {Angle, AngleType, TPoint} from '../geometry'
-import {TWebMatrix} from './contract'
+import {IWebMatrix, TWebMatrix} from './contract'
 
 const identity: TWebMatrix = [1, 0, 0, 1, 0, 0];
 
@@ -44,9 +44,10 @@ class M { // exported as WebMatrix
 //endregion
 
   toJSON = (): TWebMatrix => [...this.m];
+  toObject = (): IWebMatrix => M.toObject(this.m);
   toString = (): string => M.toString(this.m);
   toStyleValue = (): string => M.toStyleValue(this.m);
-  isEquals = (anotherM: M): boolean => M.isEquals(this.m, anotherM.m);
+  isEqual = (anotherM: M): boolean => M.isEqual(this.m, anotherM.m);
 
 
   /*
@@ -195,7 +196,7 @@ class M { // exported as WebMatrix
   static skewIdentity = (ax: number, ay: number, angleType?: AngleType): TWebMatrix => M.skew(identity, ax, ay, angleType);
 
 
-  static isEquals = (m1: TWebMatrix, m2: TWebMatrix): boolean =>
+  static isEqual = (m1: TWebMatrix, m2: TWebMatrix): boolean =>
     Math.abs(m1[0] - m2[0]) < ACCURACY &&
     Math.abs(m1[1] - m2[1]) < ACCURACY &&
     Math.abs(m1[2] - m2[2]) < ACCURACY &&
@@ -205,7 +206,7 @@ class M { // exported as WebMatrix
   ;
   static toString = (m: TWebMatrix): string => m.join(', ');
   static toStyleValue = (m: TWebMatrix): string => `matrix(${M.toString(m)})`;
-  static toDOMMatrix2DInit = (m: TWebMatrix): DOMMatrix2DInit => ({ // https://drafts.fxtf.org/geometry/#dommatrixinit-dictionary
+  static toObject = (m: TWebMatrix): IWebMatrix => ({
     a: m[0],
     b: m[1],
     c: m[2],

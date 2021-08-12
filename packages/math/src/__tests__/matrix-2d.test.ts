@@ -9,7 +9,7 @@ describe(`matrix-2d`, () => {
     const m2 = WebMatrix.of([6, 5, 4, 3, 2, 1])
     const multiply1 = m1.multiply(m2)
     const multiply2 = m2.multiply(m1)
-    expect(multiply1.isEquals(multiply2)).toBeFalsy()
+    expect(multiply1.isEqual(multiply2)).toBeFalsy()
   })
 
   test(`inversion`, () => {
@@ -17,32 +17,32 @@ describe(`matrix-2d`, () => {
     const invM = m.invert();
     const multiply1 = invM?.multiply(m) as WebMatrix
     const multiply2 = m.multiply(invM as WebMatrix)
-    expect(multiply1.isEquals(multiply2)).toBeTruthy();
-    expect(multiply1.isEquals(m.multiply(WebMatrix.of()))).toBeFalsy();
+    expect(multiply1.isEqual(multiply2)).toBeTruthy();
+    expect(multiply1.isEqual(m.multiply(WebMatrix.of()))).toBeFalsy();
   })
 
   test(`translate`, () => {
     const m = WebMatrix.of().translate(1, 10).translateX(-10).translateY(-5)
-    expect(m.isEquals(WebMatrix.of([1, 0, 0, 1, -9, 5]))).toBeTruthy()
-    expect(m.isEquals(WebMatrix.of())).toBeFalsy()
+    expect(m.isEqual(WebMatrix.of([1, 0, 0, 1, -9, 5]))).toBeTruthy()
+    expect(m.isEqual(WebMatrix.of())).toBeFalsy()
   })
 
   test(`scale`, () => {
     const m = WebMatrix.of().scale(1.5).scaleX(-0.7).scaleY(1.1)
-    expect(m.isEquals(WebMatrix.of([-1.05, 0, 0, 1.65, 0, 0]))).toBeTruthy()
-    expect(m.isEquals(WebMatrix.of())).toBeFalsy()
+    expect(m.isEqual(WebMatrix.of([-1.05, 0, 0, 1.65, 0, 0]))).toBeTruthy()
+    expect(m.isEqual(WebMatrix.of())).toBeFalsy()
   })
 
   test(`rotate`, () => {
     const m = WebMatrix.of().rotate(-10)
-    expect(m.isEquals(WebMatrix.of([0.984808, -0.173648, 0.173648, 0.984808, 0, 0]))).toBeTruthy()
-    expect(m.isEquals(WebMatrix.of())).toBeFalsy()
+    expect(m.isEqual(WebMatrix.of([0.984808, -0.173648, 0.173648, 0.984808, 0, 0]))).toBeTruthy()
+    expect(m.isEqual(WebMatrix.of())).toBeFalsy()
   })
 
   test(`skew`, () => {
     const m = WebMatrix.of().skew(5, 5).skewX(-5).skewY(-2)
-    expect(m.isEquals(WebMatrix.of([1, 0.0528352, 0, 0.992346, 0, 0]))).toBeTruthy()
-    expect(m.isEquals(WebMatrix.of())).toBeFalsy()
+    expect(m.isEqual(WebMatrix.of([1, 0.0528352, 0, 0.992346, 0, 0]))).toBeTruthy()
+    expect(m.isEqual(WebMatrix.of())).toBeFalsy()
   })
 
   test(`full matrix-2d`, () => {
@@ -52,8 +52,8 @@ describe(`matrix-2d`, () => {
       .scale(1.5).scaleX(-0.7).scaleY(1.1)
       .rotate(-10)
       .skew(5, 5).skewX(-5).skewY(-2)
-    expect(m.isEquals(WebMatrix.of([-1.04368, -0.200666, -0.180935, 1.6125, -9, 5]))).toBeTruthy()
-    expect(m.isEquals(WebMatrix.of())).toBeFalsy()
+    expect(m.isEqual(WebMatrix.of([-1.04368, -0.200666, -0.180935, 1.6125, -9, 5]))).toBeTruthy()
+    expect(m.isEqual(WebMatrix.of())).toBeFalsy()
   })
 
   test(`apply to point #1`, () => {

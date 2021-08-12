@@ -6,3 +6,12 @@
  *                    0 0 1    translation part - e f
  */
 export type TWebMatrix = [number, number, number, number, number, number];
+
+export interface IWebMatrix {
+  a: number;
+  b: number;
+  c: number;
+  d: number;
+  e: number;
+  f: number;
+}
