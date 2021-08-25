@@ -16,7 +16,8 @@ export class WebProd extends AbstractWebpackProd {
       output: {
         path: this.DIST,
         filename: this.INDEX,
-        libraryTarget: 'umd'
+        libraryTarget: 'umd',
+        globalObject: 'globalThis',
       },
       plugins: [
         new WebpackCompilerFileAction('done', [
