@@ -62,7 +62,7 @@ class M { // exported as WebMatrix
   /*
    * The Determinant of a matrix by the Laplace expansion:
    *       a c e
-   *   det b d f = 0 + 0 + 1 * (a*d-b*c)
+   *   det b d f = 0 - 0 + 1 * (a*d-b*c)
    *       0 0 1
    * https://en.wikipedia.org/wiki/Laplace_expansion
    */
