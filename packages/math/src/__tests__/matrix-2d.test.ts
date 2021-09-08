@@ -12,13 +12,20 @@ describe(`matrix-2d`, () => {
     expect(multiply1.isEqual(multiply2)).toBeFalsy()
   })
 
-  test(`inversion`, () => {
+  test(`inversion #1`, () => {
     const m = WebMatrix.of([-1.04368, -0.200666, -0.180935, 1.6125, -9, 5]);
     const invM = m.invert();
     const multiply1 = invM?.multiply(m) as WebMatrix
     const multiply2 = m.multiply(invM as WebMatrix)
     expect(multiply1.isEqual(multiply2)).toBeTruthy();
     expect(multiply1.isEqual(m.multiply(WebMatrix.of()))).toBeFalsy();
+  })
+
+  test(`inversion #2`, () => {
+    expect(WebMatrix.isEqual(
+      WebMatrix.invert([2, 2, -1, 2, 0, 0]),
+      [1 / 3, -(1 / 3), 1 / 6, 1 / 3, 0, 0]
+    )).toBeTruthy();
   })
 
   test(`translate`, () => {
