@@ -1,6 +1,6 @@
 import {describe, expect} from '@jest/globals'
-import {WebMatrix} from '../web-transform'
-import {Point} from '../geometry'
+import {TWebMatrix, WebMatrix} from '../web-transform'
+import {AngleType, Point} from '../geometry'
 
 describe(`matrix-2d`, () => {
 
@@ -74,4 +74,43 @@ describe(`matrix-2d`, () => {
     expect(p.isEqual([370, 120])).toBeTruthy()
     expect(p.isEqual([0, 0])).toBeFalsy()
   })
+
+  test(`scaleAtPoint`, () => {
+    const scaledAtPoint = WebMatrix.scaleAtPoint([40, 40], 1.25)
+    const correctResult: TWebMatrix = [1.25, 0, 0, 1.25, -10, -10];
+    expect(WebMatrix.isEqual(scaledAtPoint, correctResult)).toBeTruthy()
+    expect(WebMatrix.isEqual(scaledAtPoint, [1.25, 0, 0, 1.25, -10, 0])).toBeFalsy()
+    expect(WebMatrix.isEqual(
+      WebMatrix.multiplySequence([
+        [1, 0, 0, 1, 40, 40],
+        WebMatrix.scaleIdentity(1.25, 1.25),
+        [1, 0, 0, 1, -40, -40],
+      ]),
+      correctResult
+    )).toBeTruthy()
+    expect(WebMatrix.isEqual(
+      WebMatrix.of().translate(40).scale(1.25).translate(-40).m,
+      correctResult
+    )).toBeTruthy()
+  })
+
+  test(`rotateAtPoint`, () => {
+    const rotateAtPoint = WebMatrix.rotateAtPoint([50, 45], 45, AngleType.DEGREES)
+    const correctResult: TWebMatrix = [0.707107, 0.707107, -0.707107, 0.707107, 46.4645, -22.1751];
+    expect(WebMatrix.isEqual(rotateAtPoint, correctResult)).toBeTruthy()
+    expect(WebMatrix.isEqual(rotateAtPoint, [0.717107, 0.707107, -0.707107, 0.707107, 46.4645, -22.1751])).toBeFalsy()
+    expect(WebMatrix.isEqual(
+      WebMatrix.multiplySequence([
+        [1, 0, 0, 1, 50, 45],
+        WebMatrix.rotateIdentity(45, AngleType.DEGREES),
+        [1, 0, 0, 1, -50, -45],
+      ]),
+      correctResult
+    )).toBeTruthy()
+    expect(WebMatrix.isEqual(
+      WebMatrix.of().translate(50, 45).rotate(45, AngleType.DEGREES).translate(-50, -45).m,
+      correctResult
+    )).toBeTruthy()
+  })
+
 })

@@ -250,11 +250,12 @@ class M { // exported as WebMatrix
   }
 
   static multiplySequence3(m1: TWebMatrix, m2: TWebMatrix, m3: TWebMatrix): TWebMatrix {
-    let m = identity
-    m = M.multiply(m3, m)
-    m = M.multiply(m2, m)
-    m = M.multiply(m1, m)
-    return m;
+    // let m = identity
+    // m = M.multiply(m3, m)
+    // m = M.multiply(m2, m)
+    // m = M.multiply(m1, m)
+    // return m;
+    return M.multiply(m1, M.multiply(m2, m3)); // => m3 * m2 * m1
   }
 
 //endregion
