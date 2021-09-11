@@ -238,24 +238,35 @@ class M { // exported as WebMatrix
 
 
   /**
-   * m = m1 * m2 * ... * mN * m
-   *   Matrix multiplication is not commutative and it applies from right to left.
-   *   That is, the last matrix (mN) is applied first.
+   * (1.1)
+   *    let m = M.multiply(m1, m2) // m1 * m2
+   *        m = M.multiply(m, m3)  // (m1 * m2) * m3
+   *
+   * (1.2)
+   *    let m = identity
+   *        m = M.multiply(m, m1) // m1
+   *        m = M.multiply(m, m2) // m1 * m2
+   *        m = M.multiply(m, m3) // (m1 * m2) * m3
+   *
+   * (2.1)
+   *    let m = M.multiply(m2, m3) // m2 * m3
+   *        m = M.multiply(m1, m)  // m1 * (m2 * m3)
+   *
+   * (2.2)
+   *    let m = identity
+   *        m = M.multiply(m3, m) // m3
+   *        m = M.multiply(m2, m) // m2 * m3
+   *        m = M.multiply(m1, m) // m1 * (m2 * m3)
    */
   static multiplySequence(seq: TWebMatrix[]): TWebMatrix {
     let m = identity
-    for (let i = seq.length - 1; i >= 0; i--)
-      m = M.multiply(seq[i], m)
+    for (let i = 0; i < seq.length; i++)
+      m = M.multiply(m, seq[i]) // by (1.2)
     return m;
   }
 
   static multiplySequence3(m1: TWebMatrix, m2: TWebMatrix, m3: TWebMatrix): TWebMatrix {
-    // let m = identity
-    // m = M.multiply(m3, m)
-    // m = M.multiply(m2, m)
-    // m = M.multiply(m1, m)
-    // return m;
-    return M.multiply(m1, M.multiply(m2, m3)); // => m3 * m2 * m1
+    return M.multiply(M.multiply(m1, m2), m3); // by (1.1)
   }
 
 //endregion
