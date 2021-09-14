@@ -1,5 +1,5 @@
+import {IPointTransition, ISegmentChanging, IWebMatrix, TWebMatrix} from './contract'
 import {Angle, AngleType, TPoint} from '../geometry'
-import {IWebMatrix, TWebMatrix} from './contract'
 
 const identity: TWebMatrix = [1, 0, 0, 1, 0, 0];
 
@@ -216,26 +216,7 @@ class M { // exported as WebMatrix
   });
 
 
-//region Complex transforms
-
-  /**
-   * The algorithm is based on
-   *   https://medium.com/@benjamin.botto/zooming-at-the-mouse-coordinates-with-affine-transformations-86e7312fd50b#id_token=eyJhbGciOiJSUzI1NiIsImtpZCI6IjNkZjBhODMxZTA5M2ZhZTFlMjRkNzdkNDc4MzQ0MDVmOTVkMTdiNTQiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJuYmYiOjE2MjczMDM4NjQsImF1ZCI6IjIxNjI5NjAzNTgzNC1rMWs2cWUwNjBzMnRwMmEyamFtNGxqZGNtczAwc3R0Zy5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsInN1YiI6IjExNjczOTgzOTIzODQ1NTk2OTI4NyIsImVtYWlsIjoiZ29uem8uYmFyZEBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYXpwIjoiMjE2Mjk2MDM1ODM0LWsxazZxZTA2MHMydHAyYTJqYW00bGpkY21zMDBzdHRnLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwibmFtZSI6IkdvbnpvIEJhcmQiLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EtL0FPaDE0R2hKTEFhenFmT0xpMk9SZXVtWE92WGtsbmJmX21tZHk3MVJYZElTPXM5Ni1jIiwiZ2l2ZW5fbmFtZSI6IkdvbnpvIiwiZmFtaWx5X25hbWUiOiJCYXJkIiwiaWF0IjoxNjI3MzA0MTY0LCJleHAiOjE2MjczMDc3NjQsImp0aSI6ImMyNzA3ZjJhOWQ4YTQ4NzljZDExMGNlOTlhZTQ4NWFmNTdhMjQ4YjgifQ.Wv3Lb8ArxlUqvGrWhDE6JkMm48Cwx8CYANAkoGljovPY1Acveycet2EZm2S1VATqjZEkX6Y-rZzXcdGYe2qAth91TtVishnJSWrtH3P9G5bXR3xP3lQ5rdwWLW8UJ51KnFl2cj5aQy8DOrmXkEAMvBZEwoDEN6StA6ZlyZwv96X1al4OY_q50jFKHUV3oGK4PS4cHWM59lP-fvXJH25D7iio0O3w9gvP3MHHyG7ckhswq1gsaiEbS2XJHrbjLJwLJ4aR8RjGF8Is6uy3gEl5WFI6OHSiW5bA0fWimsKXvbhSbAUGYndWjt7hdy8gKh9aGHnSrSQxnPc6g2s-PCbUtg
-   */
-  static scaleAtPoint = (p: TPoint, sx: number, sy = sx): TWebMatrix =>
-    M.multiplySequence3(
-      [1, 0, 0, 1, p[0], p[1]],   // (1) Translate the world such that p is at the origin
-      M.scaleIdentity(sx, sy),    // (2) Scale the world
-      [1, 0, 0, 1, -p[0], -p[1]], // (3) Translate the world back such that p is at its initial location
-    );
-
-  static rotateAtPoint = (p: TPoint, angle: number, angleType?: AngleType): TWebMatrix =>
-    M.multiplySequence3(
-      [1, 0, 0, 1, p[0], p[1]],           // (1) Translate the world such that p is at the origin
-      M.rotateIdentity(angle, angleType), // (2) Rotate the world
-      [1, 0, 0, 1, -p[0], -p[1]],         // (3) Translate the world back such that p is at its initial location
-    );
-
+//region Multiplication of a sequence of matrices
 
   /**
    * (1.1)
@@ -268,6 +249,44 @@ class M { // exported as WebMatrix
   static multiplySequence3(m1: TWebMatrix, m2: TWebMatrix, m3: TWebMatrix): TWebMatrix {
     return M.multiply(M.multiply(m1, m2), m3); // by (1.1)
   }
+
+//endregion
+
+
+//region Complex transforms
+
+  /**
+   * The algorithm is based on
+   *   https://medium.com/@benjamin.botto/zooming-at-the-mouse-coordinates-with-affine-transformations-86e7312fd50b#id_token=eyJhbGciOiJSUzI1NiIsImtpZCI6IjNkZjBhODMxZTA5M2ZhZTFlMjRkNzdkNDc4MzQ0MDVmOTVkMTdiNTQiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJuYmYiOjE2MjczMDM4NjQsImF1ZCI6IjIxNjI5NjAzNTgzNC1rMWs2cWUwNjBzMnRwMmEyamFtNGxqZGNtczAwc3R0Zy5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsInN1YiI6IjExNjczOTgzOTIzODQ1NTk2OTI4NyIsImVtYWlsIjoiZ29uem8uYmFyZEBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYXpwIjoiMjE2Mjk2MDM1ODM0LWsxazZxZTA2MHMydHAyYTJqYW00bGpkY21zMDBzdHRnLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwibmFtZSI6IkdvbnpvIEJhcmQiLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EtL0FPaDE0R2hKTEFhenFmT0xpMk9SZXVtWE92WGtsbmJmX21tZHk3MVJYZElTPXM5Ni1jIiwiZ2l2ZW5fbmFtZSI6IkdvbnpvIiwiZmFtaWx5X25hbWUiOiJCYXJkIiwiaWF0IjoxNjI3MzA0MTY0LCJleHAiOjE2MjczMDc3NjQsImp0aSI6ImMyNzA3ZjJhOWQ4YTQ4NzljZDExMGNlOTlhZTQ4NWFmNTdhMjQ4YjgifQ.Wv3Lb8ArxlUqvGrWhDE6JkMm48Cwx8CYANAkoGljovPY1Acveycet2EZm2S1VATqjZEkX6Y-rZzXcdGYe2qAth91TtVishnJSWrtH3P9G5bXR3xP3lQ5rdwWLW8UJ51KnFl2cj5aQy8DOrmXkEAMvBZEwoDEN6StA6ZlyZwv96X1al4OY_q50jFKHUV3oGK4PS4cHWM59lP-fvXJH25D7iio0O3w9gvP3MHHyG7ckhswq1gsaiEbS2XJHrbjLJwLJ4aR8RjGF8Is6uy3gEl5WFI6OHSiW5bA0fWimsKXvbhSbAUGYndWjt7hdy8gKh9aGHnSrSQxnPc6g2s-PCbUtg
+   */
+  static scaleAtPoint = (p: TPoint, sx: number, sy = sx): TWebMatrix =>
+    M.multiplySequence3(
+      [1, 0, 0, 1, p[0], p[1]],   // (1) Translate the world such that p is at the origin
+      M.scaleIdentity(sx, sy),    // (2) Scale the world
+      [1, 0, 0, 1, -p[0], -p[1]], // (3) Translate the world back such that p is at its initial location
+    );
+
+  static rotateAtPoint = (p: TPoint, angle: number, angleType?: AngleType): TWebMatrix =>
+    M.multiplySequence3(
+      [1, 0, 0, 1, p[0], p[1]],           // (1) Translate the world such that p is at the origin
+      M.rotateIdentity(angle, angleType), // (2) Rotate the world
+      [1, 0, 0, 1, -p[0], -p[1]],         // (3) Translate the world back such that p is at its initial location
+    );
+
+
+  static toNewCoordinateSystem = (
+    onAxisX: ISegmentChanging,
+    onAxisY: ISegmentChanging,
+    pointTransition: IPointTransition
+  ): TWebMatrix =>
+    M.multiplySequence3(
+      [1, 0, 0, 1, -pointTransition.fromPoint[0], -pointTransition.fromPoint[1]], // (1) Translate the world1 to origin
+      M.scaleIdentity(                                                            // (2) Scale world1 to world2
+        onAxisX.toSegment / onAxisX.fromSegment,
+        onAxisY.toSegment / onAxisY.fromSegment
+      ),
+      [1, 0, 0, 1, pointTransition.toPoint[0], pointTransition.toPoint[1]]        // (3) Translate the world2 to equivalent point from world1
+    );
 
 //endregion
 

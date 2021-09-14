@@ -1,6 +1,6 @@
 import {describe, expect} from '@jest/globals'
-import {TWebMatrix, WebMatrix} from '../web-transform'
-import {AngleType, Point} from '../geometry'
+import {TWebMatrix, WebMatrix} from '../../web-transform'
+import {AngleType, Point} from '../../geometry'
 
 describe(`matrix-2d`, () => {
 
@@ -111,6 +111,53 @@ describe(`matrix-2d`, () => {
       WebMatrix.of().translate(50, 45).rotate(45, AngleType.DEGREES).translate(-50, -45).m,
       correctResult
     )).toBeTruthy()
+  })
+
+  test(`toNewCoordinateSystem`, () => {
+
+    const valueToPixel = WebMatrix.toNewCoordinateSystem(
+      {fromSegment: 2, toSegment: 28}, // x
+      {fromSegment: 3, toSegment: 42}, // y
+      {fromPoint: [15, 1], toPoint: [210, 14]}
+    );
+    const pixelToValue = WebMatrix.invert(valueToPixel)
+
+    expect(Point.isEqual(WebMatrix.apply(valueToPixel, [0, 0]), [0, 0]))
+    expect(Point.isEqual(WebMatrix.apply(valueToPixel, [2, 3]), [28, 42]))
+    expect(Point.isEqual(WebMatrix.apply(valueToPixel, [6, 14]), [84, 196]))
+    expect(Point.isEqual(WebMatrix.apply(valueToPixel, [10, 5]), [140, 70]))
+    expect(Point.isEqual(WebMatrix.apply(valueToPixel, [15, 1]), [210, 14]))
+    expect(Point.isEqual(WebMatrix.apply(valueToPixel, [21, 7]), [294, 98]))
+    expect(Point.isEqual(WebMatrix.apply(valueToPixel, [27, 9]), [378, 126]))
+
+    expect(Point.isEqual(WebMatrix.apply(pixelToValue, [0, 0]), [0, 0]))
+    expect(Point.isEqual(WebMatrix.apply(pixelToValue, [28, 42]), [2, 3]))
+    expect(Point.isEqual(WebMatrix.apply(pixelToValue, [84, 196]), [6, 14]))
+    expect(Point.isEqual(WebMatrix.apply(pixelToValue, [140, 70]), [10, 5]))
+    expect(Point.isEqual(WebMatrix.apply(pixelToValue, [210, 14]), [15, 1]))
+    expect(Point.isEqual(WebMatrix.apply(pixelToValue, [294, 98]), [21, 7]))
+    expect(Point.isEqual(WebMatrix.apply(pixelToValue, [378, 126]), [27, 9]))
+
+    //
+    // http://mathprofi.ru/perehod_k_novomu_bazisu.html
+    //
+    // const perehod1: TWebMatrix = [2, 2, -1, 1, 0, 0];
+    // const inverted1 = WebMatrix.invert(perehod1);
+    //
+    // const newToOld = (p: TPoint, p0): TPoint => {
+    //   return Point.add(WebMatrix.apply(perehod1, p), p0)
+    // }
+    // const oldToNew = (p: TPoint, p0): TPoint => {
+    //   const p01 = Point.k(-1)(WebMatrix.apply(inverted1, p0))
+    //   return Point.add(WebMatrix.apply(inverted1, p), p01)
+    // }
+    // console.log(`new [1,1] to old`,newToOld([1,1], [2,2]))
+    // console.log(`new [0,-1] to old`,newToOld([0,-1], [2,2]))
+    // console.log(`new [0,0] to old`,newToOld([0,0], [2,2]))
+    // console.log(`old to new [0,0]`, oldToNew([0, 0], [2, 2]))
+    // console.log(`old to new [2,2]`, oldToNew([2, 2], [2, 2]))
+    // console.log(`old to new [3, 5]`, oldToNew([3, 5], [2, 2]))
+    // console.log(`old to new [3, 1]`, oldToNew([3, 1], [2, 2]))
   })
 
 })
