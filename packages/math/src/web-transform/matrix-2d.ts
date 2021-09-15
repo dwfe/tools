@@ -275,7 +275,7 @@ class M { // exported as WebMatrix
 
 
   static toNewCoordinateSystemSimple = (onAxisX: ISegmentChanging, onAxisY: ISegmentChanging): TWebMatrix =>
-    M.scaleIdentity(
+    M.scaleIdentity( // Scale old coordinate system to new coordinate system
       onAxisX.toSegment / onAxisX.fromSegment,
       onAxisY.toSegment / onAxisY.fromSegment
     );
@@ -286,22 +286,8 @@ class M { // exported as WebMatrix
     pointTransition: IPointTransition
   ): TWebMatrix =>
     M.multiplySequence3(
-      [1, 0, 0, 1, -pointTransition.fromPoint[0], -pointTransition.fromPoint[1]], // (1) Translate the world1 to origin
-      M.scaleIdentity(                                                            // (2) Scale world1 to world2
-        onAxisX.toSegment / onAxisX.fromSegment,
-        onAxisY.toSegment / onAxisY.fromSegment
-      ),
-      [1, 0, 0, 1, pointTransition.toPoint[0], pointTransition.toPoint[1]]        // (3) Translate the world2 to equivalent point from world1
-    );
-
-  static toNewCoordinateSystem1 = (
-    onAxisX: ISegmentChanging,
-    onAxisY: ISegmentChanging,
-    pointTransition: IPointTransition
-  ): TWebMatrix =>
-    M.multiplySequence3(
       [1, 0, 0, 1, pointTransition.toPoint[0], pointTransition.toPoint[1]],       // (3) Translate the world2 to equivalent point from world1
-      M.scaleIdentity(                                                            // (2) Scale world1 to world2
+      M.scaleIdentity(                                                            // (2) Scale
         onAxisX.toSegment / onAxisX.fromSegment,
         onAxisY.toSegment / onAxisY.fromSegment
       ),
