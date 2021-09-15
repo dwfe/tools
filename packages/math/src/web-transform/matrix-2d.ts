@@ -1,5 +1,5 @@
 import {IPointTransition, ISegmentChanging, IWebMatrix, TWebMatrix} from './contract'
-import {Angle, AngleType, Point, TPoint} from '../geometry'
+import {Angle, AngleType, TPoint} from '../geometry'
 
 const identity: TWebMatrix = [1, 0, 0, 1, 0, 0];
 
@@ -261,16 +261,16 @@ class M { // exported as WebMatrix
    */
   static scaleAtPoint = (p: TPoint, sx: number, sy = sx): TWebMatrix =>
     M.multiplySequence3(
-      [1, 0, 0, 1, ...p],              // (1) Translate the world such that p is at the origin
-      M.scaleIdentity(sx, sy),         // (2) Scale the world
-      [1, 0, 0, 1, ...Point.k(-1)(p)], // (3) Translate the world back such that p is at its initial location
+      [1, 0, 0, 1, p[0], p[1]],   // (1) Translate the world such that p is at the origin
+      M.scaleIdentity(sx, sy),    // (2) Scale the world
+      [1, 0, 0, 1, -p[0], -p[1]], // (3) Translate the world back such that p is at its initial location
     );
 
   static rotateAtPoint = (p: TPoint, angle: number, angleType?: AngleType): TWebMatrix =>
     M.multiplySequence3(
-      [1, 0, 0, 1, ...p],                 // (1) Translate the world such that p is at the origin
+      [1, 0, 0, 1, p[0], p[1]],           // (1) Translate the world such that p is at the origin
       M.rotateIdentity(angle, angleType), // (2) Rotate the world
-      [1, 0, 0, 1, ...Point.k(-1)(p)],    // (3) Translate the world back such that p is at its initial location
+      [1, 0, 0, 1, -p[0], -p[1]],         // (3) Translate the world back such that p is at its initial location
     );
 
 
@@ -284,15 +284,11 @@ class M { // exported as WebMatrix
       onAxisY.toSegment / onAxisY.fromSegment
     );
 
-  static toNewCoordinateSystem = (
-    onAxisX: ISegmentChanging,
-    onAxisY: ISegmentChanging,
-    pointTransition: IPointTransition
-  ): TWebMatrix =>
+  static toNewCoordinateSystem = (onAxisX: ISegmentChanging, onAxisY: ISegmentChanging, {fromPoint, toPoint}: IPointTransition): TWebMatrix =>
     M.multiplySequence3(
-      [1, 0, 0, 1, ...pointTransition.toPoint],                // (1) Translate the "To-World" such that pointTransition.toPoint is at the origin
-      M.toNewCoordinateSystemSimple(onAxisX, onAxisY),         // (2) Scale <=> convert "From-World" -> "To-World"
-      [1, 0, 0, 1, ...Point.k(-1)(pointTransition.fromPoint)], // (3) Translate the "From-World" back such that pointTransition.fromPoint is at its initial location (EQUIVALENT point from "To-World" pointTransition.toPoint)
+      [1, 0, 0, 1, toPoint[0], toPoint[1]],            // (1) Translate the "World-To" such that toPoint is at the origin
+      M.toNewCoordinateSystemSimple(onAxisX, onAxisY), // (2) Scale <=> convert "World-From" -> "World-To"
+      [1, 0, 0, 1, -fromPoint[0], -fromPoint[1]],      // (3) Translate the "World-From" back such that fromPoint is at its initial location (EQUIVALENT point from "World-To" toPoint)
     );
 
 //endregion
