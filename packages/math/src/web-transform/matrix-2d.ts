@@ -290,9 +290,9 @@ class M { // exported as WebMatrix
     pointTransition: IPointTransition
   ): TWebMatrix =>
     M.multiplySequence3(
-      [1, 0, 0, 1, ...pointTransition.toPoint],                // (3) Translate the "To-World" to EQUIVALENT point from "From-World"
-      M.toNewCoordinateSystemSimple(onAxisX, onAxisY),         // (2) Scale -> convert "From-World" to "To-World"
-      [1, 0, 0, 1, ...Point.k(-1)(pointTransition.fromPoint)], // (1) Translate the "From-World" to some inverse point
+      [1, 0, 0, 1, ...pointTransition.toPoint],                // (1) Translate the "To-World" such that pointTransition.toPoint is at the origin
+      M.toNewCoordinateSystemSimple(onAxisX, onAxisY),         // (2) Scale <=> convert "From-World" -> "To-World"
+      [1, 0, 0, 1, ...Point.k(-1)(pointTransition.fromPoint)], // (3) Translate the "From-World" back such that pointTransition.fromPoint is at its initial location (EQUIVALENT point from "To-World" pointTransition.toPoint)
     );
 
 //endregion
